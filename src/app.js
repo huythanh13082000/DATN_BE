@@ -5,6 +5,8 @@ const userRoute = require('./api/routes/userRoute')
 const app = express()
 app.use(morgan('combined'))
 app.use(express.json())
+app.use(express.urlencoded({ extended: true, limit: '30mb' }));
+// app.use(cors());
 // create application/x-www-form-urlencoded parser
 main().catch(err => console.log(err));
 
@@ -13,7 +15,7 @@ async function main() {
   // use `await mongoose.connect('mongodb://user:password@localhost:27017/test');` if your database has auth enabled
 }
 
-app.use('/', userRoute)
+app.use('/api', userRoute)
 
 module.exports = app
 

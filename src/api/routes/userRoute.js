@@ -1,7 +1,11 @@
 const express = require('express')
-const { createUser } = require('../controllers/userControllers');
+const { createUser, defaultUser } = require('../controllers/userControllers');
 const route = express.Router()
 
-const userRoute = route.post('/api/user', createUser)
+const userRoute = route;
+
+userRoute.post('/auth/signin', createUser)
+
+userRoute.get('/auth/profile', defaultUser)
 
 module.exports = userRoute

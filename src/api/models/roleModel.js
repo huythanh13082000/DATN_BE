@@ -6,6 +6,4 @@ const roleSchema = mongoose.Schema({
 })
 
 const roleModel = mongoose.model('roles', roleSchema)
-
-
 module.exports = roleModel
