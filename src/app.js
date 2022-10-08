@@ -1,7 +1,8 @@
 const express = require('express')
 const morgan = require('morgan')
 const mongoose = require('mongoose');
-const userRoute = require('./api/routes/userRoute')
+const userRoute = require('./api/routes/user.route')
+
 const app = express()
 app.use(morgan('combined'))
 app.use(express.json())

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const permissionResourcesSchema = mongoose.Schema({
+const permissionResourcesSchema = new mongoose.Schema({
   name: String,
   code: String
 })
