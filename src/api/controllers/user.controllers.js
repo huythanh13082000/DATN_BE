@@ -1,6 +1,7 @@
 const userModel = require("../models/user.model")
 const jwt = require("jsonwebtoken")
 const bcrypt = require('bcrypt');
+const { generateToken } = require("../helper/generateToken");
 
 
 const createUser = async (req, res) => {
@@ -11,34 +12,44 @@ const createUser = async (req, res) => {
   return res.json('success')
 }
 const defaultUser = async (req, res) => {
-  // const id = req.params['id']
   const idParams = req.query.id
-  console.log(idParams);
-  const defaultUser = await userModel.find({ _id: idParams })
+  const defaultUser = await userModel.findOne({ _id: idParams })
   return res.json(defaultUser)
 }
 const deleteUser = async (req, res) => {
-  // const id = req.params['id']
-  console.log(req.user._id);
   const user = await userModel.findOneAndDelete({ _id: id })
   console.log(user);
-  // console.log(id);
   if (user) {
     return res.json('delete success')
   }
   else return res.json('id not valid')
 }
 const login = async (req, res) => {
-  console.log(process.env.TOKEN_SECRET);
   const { username, passWord } = req.body
   const user = await userModel.findOne({ username })
   if (user) {
     const checkPassWord = await bcrypt.compare(passWord, user.passWord)
     if (checkPassWord) {
-      const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET)
-      return res.status(403).json({ accessToken: token })
+      const tokens = generateToken({ _id: user._id })
+      console.log(1111, tokens);
+      await userModel.findOneAndUpdate({ _id: user._id }, { refreshToken: tokens.refreshToken })
+      return res.status(200).json(tokens)
     }
     else return res.status(403).json({ message: "usernam or password wrong" })
   }
 }
-module.exports = { createUser, defaultUser, login, deleteUser }
+const refreshToken = async (req, res) => {
+  const { refreshToken } = req.body
+  const user = await userModel.findOne({ refreshToken })
+  if (user) {
+    const tokens = generateToken({ _id: user._id })
+    console.log(11112, tokens);
+    const user1 = await userModel.findOneAndUpdate({ _id: user._id }, { refreshToken: tokens.refreshToken })
+    console.log(444, user1);
+    return res.status(200).json(tokens)
+  }
+  else return res.status(403).json({ message: "refresh token not valid" })
+}
+
+
+module.exports = { createUser, defaultUser, login, deleteUser, refreshToken }
