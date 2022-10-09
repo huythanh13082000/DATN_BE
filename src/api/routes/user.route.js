@@ -5,12 +5,12 @@ const route = express.Router()
 
 const userRoute = route;
 
-userRoute.post('/auth/signin', createUser)
+userRoute.post('/auth/signup', createUser)
 
 userRoute.get('/auth/profile', defaultUser)
 
-userRoute.post('/auth/login', login)
+userRoute.post('/auth/signin', login)
 
-userRoute.delete('/user/delete/:id', middlewareAuth.verifyToken, deleteUser)
+userRoute.delete('/user/delete', middlewareAuth.verifyToken, deleteUser)
 
 module.exports = userRoute
