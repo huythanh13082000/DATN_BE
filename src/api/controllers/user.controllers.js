@@ -17,13 +17,15 @@ const defaultUser = async (req, res) => {
   return res.json(defaultUser)
 }
 const deleteUser = async (req, res) => {
-  const user = await userModel.findOneAndDelete({ _id: id })
-  console.log(user);
-  if (user) {
+  const id = req.query.id
+  try {
+    await userModel.findOneAndDelete({ _id: id })
     return res.json('delete success')
+  } catch (error) {
+    return res.json('id not valid')
   }
-  else return res.json('id not valid')
 }
+
 const login = async (req, res) => {
   const { username, passWord } = req.body
   const user = await userModel.findOne({ username })
