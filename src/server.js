@@ -1,4 +1,4 @@
-const app = require('./app')
+const {app} = require('./app')
 require('dotenv').config()
 
 const port = 4200

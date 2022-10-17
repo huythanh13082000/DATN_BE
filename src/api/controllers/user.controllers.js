@@ -40,6 +40,15 @@ const login = async (req, res) => {
     else return res.status(403).json({ message: "usernam or password wrong" })
   }
 }
+const updateUser = async (req, res) => {
+  const formData = req.body
+  const user = await userModel.findOneAndUpdate({ _id: req.body._id })
+  console.log(5555, formData)
+  // if (user) {
+  //   const
+  // }
+
+}
 const refreshToken = async (req, res) => {
   const { refreshToken } = req.body
   const user = await userModel.findOne({ refreshToken })
@@ -54,4 +63,4 @@ const refreshToken = async (req, res) => {
 }
 
 
-module.exports = { createUser, defaultUser, login, deleteUser, refreshToken }
+module.exports = { createUser, defaultUser, login, deleteUser, refreshToken, updateUser }
