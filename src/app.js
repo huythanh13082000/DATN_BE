@@ -5,6 +5,8 @@ const userRoute = require('./api/routes/user.route')
 const bodyParser = require('body-parser')
 const multer = require('multer')
 const uploadFileRoute = require('./api/routes/uploadFile.route');
+const middlewareAuth = require('./api/middleware/auth');
+const { uploadFile } = require('./api/controllers/uploadFIle.controllers');
 
 const app = express()
 app.use(morgan('combined'))
@@ -24,7 +26,7 @@ var storage = multer.diskStorage({
   }
 })
 
-var upload = multer({ storage: storage })
+const upload = multer({ storage: storage })
 
 // app.use(cors());
 // create application/x-www-form-urlencoded parser
@@ -37,11 +39,7 @@ async function main() {
 
 app.use('/api', userRoute)
 app.use('/api', uploadFileRoute)
-app.post('/uploadFile', upload.single('avatar'), function (req, res) {
-  // req.file is the name of your file in the form above, here 'uploaded_file'
-  // req.body will hold the text fields, if there were any 
-  console.log(req.file, req.body)
-});
+app.post('/uploadFile', middlewareAuth.verifyToken, upload.single('avatar'), uploadFile);
 
 module.exports = { app, upload }
 
