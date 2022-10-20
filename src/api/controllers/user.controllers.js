@@ -41,13 +41,12 @@ const login = async (req, res) => {
   }
 }
 const updateUser = async (req, res) => {
-  const formData = req.body
-  const user = await userModel.findOneAndUpdate({ _id: req.body._id })
-  console.log(5555, formData)
-  // if (user) {
-  //   const
-  // }
-
+  const data = req.body
+  try {
+    await userModel.findOneAndUpdate({ _id: req.body._id }, { ...data })
+  } catch (error) {
+    res.status(404).json(error)
+  }
 }
 const refreshToken = async (req, res) => {
   const { refreshToken } = req.body
