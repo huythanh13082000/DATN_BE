@@ -27,24 +27,22 @@ const createDepartment = async (req, res) => {
   }
 }
 const updateDepartment = async (req, res) => {
-  // const data = req.body
-  console.log(4444, req.params)
-  const _id = req.params
+  const data = req.body
+  const _id = req.params.id
   try {
-    const department = await departmentModel.findOne({ _id });
-    console.log(department, 1111)
-    // await departmentModel.findByIdAndUpdate({ _id: id }, { ...department, updatedAt: Date.now() })
+    await departmentModel.findByIdAndUpdate({ _id }, { ...data, updatedAt: Date.now() })
     return res.status(200).json('update department success')
   } catch (error) {
     return res.status(403).json(error)
   }
 }
 const deleteDepartment = async (req, res) => {
+  const _id = req.params.id
   try {
-    await departmentModel.findByIdAndDelete({ _id: req.user._id })
-    req.status(200).json('delete department success')
+    await departmentModel.findByIdAndDelete({ _id })
+    return req.status(200).json('delete department success')
   } catch (error) {
-    req.status(403).json(error)
+    return req.status(403).json(error)
   }
 }
 

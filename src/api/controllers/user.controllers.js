@@ -12,7 +12,7 @@ const getListUser = async (req, res) => {
         if (err) {
           return next(err)
         }
-        else res.status(200).json({ list: departments, total: count })
+        else res.status(200).json({ list: users, total: count })
       })
     })
   } catch (error) {
@@ -50,6 +50,7 @@ const deleteUser = async (req, res) => {
 const login = async (req, res) => {
   const { username, passWord } = req.body
   const user = await userModel.findOne({ username })
+  console.log(user)
   if (user) {
     const checkPassWord = await bcrypt.compare(passWord, user.passWord)
     if (checkPassWord) {
@@ -60,6 +61,8 @@ const login = async (req, res) => {
     }
     else return res.status(403).json({ message: "usernam or password wrong" })
   }
+  else return res.status(403).json({ message: "usernam or password wrong" })
+
 }
 const updateUser = async (req, res) => {
   const data = req.body
