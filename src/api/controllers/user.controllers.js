@@ -43,7 +43,8 @@ const login = async (req, res) => {
 const updateUser = async (req, res) => {
   const data = req.body
   try {
-    await userModel.findOneAndUpdate({ _id: req.body._id }, { ...data })
+    await userModel.findOneAndUpdate({ _id: req.user._id }, { ...data })
+    res.status(200).json('update success')
   } catch (error) {
     res.status(404).json(error)
   }
