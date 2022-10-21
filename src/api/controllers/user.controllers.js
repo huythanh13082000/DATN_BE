@@ -4,12 +4,33 @@ const bcrypt = require('bcrypt');
 const { generateToken } = require("../helper/generateToken");
 
 
+const getListUser = async (req, res) => {
+  const { limit, page, keyword } = req.query
+  try {
+    await userModel.find().skip(page * limit - limit).limit(limit).exec((err, users) => {
+      userModel.countDocuments((err, count) => {
+        if (err) {
+          return next(err)
+        }
+        else res.status(200).json({ list: departments, total: count })
+      })
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 const createUser = async (req, res) => {
   const { username, passWord, email } = req.body
   const saft = await bcrypt.genSalt(10)
   const hash = await bcrypt.hash(passWord, saft)
-  await userModel.create({ username: username, passWord: hash, email: email })
-  return res.json('success')
+  console.log(req.body)
+  try {
+    await userModel.create({ username: username, passWord: hash, email: email })
+    return res.status(200).json('success')
+  } catch (error) {
+    return res.status(403).json(error)
+  }
 }
 const defaultUser = async (req, res) => {
   const idParams = req.query.id
@@ -63,4 +84,4 @@ const refreshToken = async (req, res) => {
 }
 
 
-module.exports = { createUser, defaultUser, login, deleteUser, refreshToken, updateUser }
+module.exports = { createUser, defaultUser, login, deleteUser, refreshToken, updateUser, getListUser }

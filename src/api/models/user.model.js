@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
   refreshToken: String,
   avatar: String,
   createdAt: { type: Date, required: true, default: Date.now },
-  updatedAt: { type: Date, required: true }
+  updatedAt: { type: Date }
 })
 
 const userModel = mongoose.model('users', userSchema)

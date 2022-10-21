@@ -7,6 +7,7 @@ const multer = require('multer')
 const uploadFileRoute = require('./api/routes/uploadFile.route');
 const middlewareAuth = require('./api/middleware/auth');
 const { uploadFile } = require('./api/controllers/uploadFIle.controllers');
+const departmentRoute = require('./api/routes/department.route');
 
 const app = express()
 app.use(morgan('combined'))
@@ -39,6 +40,7 @@ async function main() {
 
 app.use('/api', userRoute)
 app.use('/api', uploadFileRoute)
+app.use('/api', departmentRoute)
 app.post('/uploadFile', middlewareAuth.verifyToken, upload.single('avatar'), uploadFile);
 
 module.exports = { app, upload }
