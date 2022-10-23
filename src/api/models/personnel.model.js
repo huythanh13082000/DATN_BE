@@ -1,16 +1,17 @@
 const mongoose = require('mongoose')
+const { Schema } = mongoose
 
 const personnelSchema = new mongoose.Schema({
   name: String,
   adress: String,
-  id_rank: String,
-  id_contract: String,
-  id_department: String,
+  rank: { type: Schema.Types.ObjectId, ref: 'rank' },
+  contract: { type: Schema.Types.ObjectId, ref: 'contract' },
+  department: { type: Schema.Types.ObjectId, ref: 'department' },
   email: String,
   phoneNumber: String,
   citizenIdentification: String,
   createdAt: { type: Date, required: true, default: Date.now },
-  updatedAt: { type: Date, required: true },
+  updatedAt: { type: Date },
   dateOfBirth: { type: Date },
   sex: 'male' | 'female',
   avatar: String,

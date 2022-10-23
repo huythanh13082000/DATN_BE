@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
 const contractSchema = new mongoose.Schema({
   name: String,
-  file: Buffer,
+  file: String,
   createdAt: { type: Date, required: true, default: Date.now },
-  updatedAt: { type: Date, required: true },
+  updatedAt: { type: Date },
 })
 
-const contractModel = mongoose.model('contract',contractSchema)
+const contractModel = mongoose.model('contract', contractSchema)
 
 module.exports = contractModel

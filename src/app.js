@@ -8,6 +8,8 @@ const uploadFileRoute = require('./api/routes/uploadFile.route');
 const middlewareAuth = require('./api/middleware/auth');
 const { uploadFile } = require('./api/controllers/uploadFIle.controllers');
 const departmentRoute = require('./api/routes/department.route');
+const rankRoute = require('./api/routes/rank.route');
+const contractRoute = require('./api/routes/contract.route');
 
 const app = express()
 app.use(morgan('combined'))
@@ -41,6 +43,8 @@ async function main() {
 app.use('/api', userRoute)
 app.use('/api', uploadFileRoute)
 app.use('/api', departmentRoute)
+app.use('/api', rankRoute)
+app.use('/api', contractRoute)
 app.post('/uploadFile', middlewareAuth.verifyToken, upload.single('avatar'), uploadFile);
 
 module.exports = { app, upload }
