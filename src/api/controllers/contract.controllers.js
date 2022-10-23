@@ -13,7 +13,7 @@ const updateContract = async (req, res) => {
   const data = req.body
   const _id = req.params.id
   try {
-    await contractModel.findByIdAndUpdate({ _id }, { ...data, updateAt: Date.now() })
+    await contractModel.findByIdAndUpdate({ _id }, { ...data, updatedAt: Date.now() })
     const contract = await contractModel.findOne({ _id })
     return res.status(200).json({ data: contract, description: 'Update Contract Success' })
   } catch (error) {

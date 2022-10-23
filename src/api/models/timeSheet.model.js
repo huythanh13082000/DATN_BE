@@ -1,11 +1,12 @@
 const mongoose = require('mongoose')
+const { Schema } = mongoose
 const timeSheetSchema = new mongoose.Schema({
-  id_personnel: String,
-  id_department: String,
+  personnel: { type: Schema.Types.ObjectId, ref: 'personnel' },
+  department: { type: Schema.Types.ObjectId, ref: 'department' },
   workingDay: Date,
-  status: 0 | 1 | 2,
-  createdAt: { type: Date, required: true, default: Date.now },
-  updatedAt: { type: Date, required: true },
+  status: Number,
+  createdAt: { type: Date, required: true, default: Date.now() },
+  updatedAt: { type: Date },
 })
-const timeSheetModel = mongoose.model('timeSheet',timeSheetSchema)
+const timeSheetModel = mongoose.model('timeSheet', timeSheetSchema)
 module.exports = timeSheetModel

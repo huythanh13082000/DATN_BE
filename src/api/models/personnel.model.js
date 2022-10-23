@@ -3,7 +3,7 @@ const { Schema } = mongoose
 
 const personnelSchema = new mongoose.Schema({
   name: String,
-  adress: String,
+  address: String,
   rank: { type: Schema.Types.ObjectId, ref: 'rank' },
   contract: { type: Schema.Types.ObjectId, ref: 'contract' },
   department: { type: Schema.Types.ObjectId, ref: 'department' },
@@ -12,7 +12,7 @@ const personnelSchema = new mongoose.Schema({
   citizenIdentification: String,
   createdAt: { type: Date, required: true, default: Date.now },
   updatedAt: { type: Date },
-  dateOfBirth: { type: Date },
+  dateOfBirth: { type: String },
   sex: 'male' | 'female',
   avatar: String,
   note: String,
