@@ -17,6 +17,7 @@ const personnelBonusRoute = require('./api/routes/personnelBonus.route');
 const fineRoute = require('./api/routes/fine.route');
 const allowanceRoute = require('./api/routes/allowance.route');
 const personnelAllowanceRoute = require('./api/routes/personnelAllowance.route');
+const notificationRoute = require('./api/routes/notification.route');
 
 const app = express()
 app.use(morgan('combined'))
@@ -59,6 +60,7 @@ app.use('/api', personnelBonusRoute)
 app.use('/api', fineRoute)
 app.use('/api', allowanceRoute)
 app.use('/api', personnelAllowanceRoute)
+app.use('/api', notificationRoute)
 app.post('/uploadFile', middlewareAuth.verifyToken, upload.single('avatar'), uploadFile);
 
 module.exports = { app, upload }
