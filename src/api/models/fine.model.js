@@ -1,11 +1,10 @@
 const mongoose = require('mongoose')
-const allowanceSchema = new mongoose.Schema({
+const fineSchema = new mongoose.Schema({
   name: String,
   value: Number,
   createdAt: { type: Date, required: true, default: Date.now() },
   updatedAt: { type: Date },
 })
 
-const allowanceModel = mongoose.model('allowance', allowanceSchema)
-
-module.exports = allowanceModel
+const fineModel = mongoose.model('fine', fineSchema)
+module.exports = fineModel

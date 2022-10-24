@@ -13,6 +13,10 @@ const contractRoute = require('./api/routes/contract.route');
 const personnelRoute = require('./api/routes/personnel.route');
 const timeSheetRoute = require('./api/routes/timeSheet.route');
 const bonusRoute = require('./api/routes/bonus.route');
+const personnelBonusRoute = require('./api/routes/personnelBonus.route');
+const fineRoute = require('./api/routes/fine.route');
+const allowanceRoute = require('./api/routes/allowance.route');
+const personnelAllowanceRoute = require('./api/routes/personnelAllowance.route');
 
 const app = express()
 app.use(morgan('combined'))
@@ -51,6 +55,10 @@ app.use('/api', contractRoute)
 app.use('/api', personnelRoute)
 app.use('/api', timeSheetRoute)
 app.use('/api', bonusRoute)
+app.use('/api', personnelBonusRoute)
+app.use('/api', fineRoute)
+app.use('/api', allowanceRoute)
+app.use('/api', personnelAllowanceRoute)
 app.post('/uploadFile', middlewareAuth.verifyToken, upload.single('avatar'), uploadFile);
 
 module.exports = { app, upload }
