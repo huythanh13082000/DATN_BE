@@ -18,6 +18,7 @@ const fineRoute = require('./api/routes/fine.route');
 const allowanceRoute = require('./api/routes/allowance.route');
 const personnelAllowanceRoute = require('./api/routes/personnelAllowance.route');
 const notificationRoute = require('./api/routes/notification.route');
+const { readFile } = require('./api/helper/readExcel');
 
 const app = express()
 app.use(morgan('combined'))
@@ -62,6 +63,8 @@ app.use('/api', allowanceRoute)
 app.use('/api', personnelAllowanceRoute)
 app.use('/api', notificationRoute)
 app.post('/uploadFile', middlewareAuth.verifyToken, upload.single('avatar'), uploadFile);
+
+console.log(readFile('file.csv'))
 
 module.exports = { app, upload }
 
