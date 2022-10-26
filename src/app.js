@@ -19,6 +19,7 @@ const allowanceRoute = require('./api/routes/allowance.route');
 const personnelAllowanceRoute = require('./api/routes/personnelAllowance.route');
 const notificationRoute = require('./api/routes/notification.route');
 const { readFile } = require('./api/helper/readExcel');
+const XLSX = require('xlsx')
 
 const app = express()
 app.use(morgan('combined'))
@@ -64,7 +65,84 @@ app.use('/api', personnelAllowanceRoute)
 app.use('/api', notificationRoute)
 app.post('/uploadFile', middlewareAuth.verifyToken, upload.single('avatar'), uploadFile);
 
-console.log(readFile('file.csv'))
+// console.log(readFile('demo2.xlsx'))
+// var data = [
+//   ["Joa Doe", "joa@doe.com", "asas"],
+//   ["Job Doe", "job@doe.com"],
+//   ["Joe Doe", "joe@doe.com"],
+//   ["Jon Doe", "jon@doe.com"],
+//   ["Joy Doe", "joy@doe.com"]
+// ];
+// var workbook = XLSX.utils.book_new(),
+//   worksheet = XLSX.utils.aoa_to_sheet(data);
+// workbook.SheetNames.push("First");
+// workbook.Sheets["First"] = worksheet;
+// XLSX.writeFile(workbook, "demo2.xlsx");
+
+// Requiring the module
+
+
+// Reading our test file
+// const file = XLSX.readFile('uploads/file.csv')
+
+// let data = []
+
+// const sheets = file.SheetNames
+
+// for (let i = 0; i < sheets.length; i++) {
+//   const temp = XLSX.utils.sheet_to_json(
+//     file.Sheets[file.SheetNames[i]])
+//   temp.forEach((res) => {
+//     console.log(res)
+//     data.push(res)
+//   })
+// }
+
+// Printing data
+// console.log(1,data)
+
+
+
+// Requiring module
+// const reader = require('xlsx')
+
+// Reading our test file
+data = [{
+
+  firstName: 'John',
+
+  lastName: 'Doe'
+
+}, {
+
+  firstName: 'Smith',
+
+  lastName: 'Peters'
+
+}, {
+
+  firstName: 'Alice',
+
+  lastName: 'Lee'
+
+}]
+
+const ws = XLSX.utils.json_to_sheet(data)
+
+const wb = XLSX.utils.book_new()
+
+XLSX.utils.book_append_sheet(wb, ws, 'Responses')
+
+// XLSX.writeFile(wb, 'sampleData.export.xlsx')
+
+// const url = window.URL.createObjectURL(file);
+// const link = document.createElement('a');
+// link.href = url;
+// link.setAttribute('download', 'file.pdf'); //or any other extension
+// document.body.appendChild(link);
+// link.click();
+
+// Writing to our file
 
 module.exports = { app, upload }
 
