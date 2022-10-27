@@ -1,3 +1,4 @@
+const { exportExcel } = require("../helper/exportExcel");
 const departmentModel = require("../models/department.model");
 
 const getListDepartment = async (req, res) => {
@@ -46,4 +47,25 @@ const deleteDepartment = async (req, res) => {
   }
 }
 
-module.exports = { createDepartment, updateDepartment, deleteDepartment, getListDepartment }
+const exportExcelDepartment = async (req, res) => {
+  const { limit, page, keyword, nameFile } = req.body
+  try {
+    departmentModel.find().skip(page * limit - limit).limit(limit).exec((err, departments) => {
+      console.log(departments)
+      exportExcel(departments, nameFile)
+      // departmentModel.countDocuments((err, count) => {
+      //   if (err) {
+      //     return next(err)
+      //   }
+      //   else res.status(200).json({ list: departments, total: count })
+      // })
+      // res.send(`uploads/${nameFile}.csv`)
+      // res.attachment('filename.csv');
+      // res.status(200).send(data);
+    })
+  } catch (error) {
+    return req.status(403).json(error)
+  }
+}
+
+module.exports = { createDepartment, updateDepartment, deleteDepartment, getListDepartment, exportExcelDepartment }

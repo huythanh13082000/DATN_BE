@@ -19,7 +19,6 @@ const allowanceRoute = require('./api/routes/allowance.route');
 const personnelAllowanceRoute = require('./api/routes/personnelAllowance.route');
 const notificationRoute = require('./api/routes/notification.route');
 const { readFile } = require('./api/helper/readExcel');
-const XLSX = require('xlsx')
 
 const app = express()
 app.use(morgan('combined'))
@@ -107,31 +106,34 @@ app.post('/uploadFile', middlewareAuth.verifyToken, upload.single('avatar'), upl
 // const reader = require('xlsx')
 
 // Reading our test file
-data = [{
+// data = [{
 
-  firstName: 'John',
+//   firstName: 'John',
 
-  lastName: 'Doe'
+//   lastName: 'Doe'
 
-}, {
+// }, {
 
-  firstName: 'Smith',
+//   firstName: 'Smith',
 
-  lastName: 'Peters'
+//   lastName: 'Peters'
 
-}, {
+// }, {
 
-  firstName: 'Alice',
+//   firstName: 'Alice',
 
-  lastName: 'Lee'
+//   lastName: 'Lee'
 
-}]
+// }]
 
-const ws = XLSX.utils.json_to_sheet(data)
 
-const wb = XLSX.utils.book_new()
+// const ws = XLSX.utils.json_to_sheet(data)
 
-XLSX.utils.book_append_sheet(wb, ws, 'Responses')
+// const wb = XLSX.utils.book_new()
+
+// const a = XLSX.utils.book_append_sheet(wb, ws, 'Responses')
+// const b = XLSX.writeFile(wb, 'sampleData.export.xlsx')
+// console.log(b)
 
 // XLSX.writeFile(wb, 'sampleData.export.xlsx')
 
