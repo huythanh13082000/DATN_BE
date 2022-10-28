@@ -1,3 +1,4 @@
+const { parse } = require("json2csv");
 const { exportExcel } = require("../helper/exportExcel");
 const departmentModel = require("../models/department.model");
 
@@ -48,23 +49,23 @@ const deleteDepartment = async (req, res) => {
 }
 
 const exportExcelDepartment = async (req, res) => {
-  const { limit, page, keyword, nameFile } = req.body
+  const { limit, page, keyword, nameFile } = req.query
+  console.log(222, nameFile)
   try {
-    departmentModel.find().skip(page * limit - limit).limit(limit).exec((err, departments) => {
-      console.log(departments)
-      exportExcel(departments, nameFile)
-      // departmentModel.countDocuments((err, count) => {
-      //   if (err) {
-      //     return next(err)
-      //   }
-      //   else res.status(200).json({ list: departments, total: count })
-      // })
-      // res.send(`uploads/${nameFile}.csv`)
-      // res.attachment('filename.csv');
-      // res.status(200).send(data);
+    departmentModel.find().skip(page * limit - limit).limit(limit).exec(async (err, departments) => {
+      console.log(departments);
+      const fields = [
+        "_id",
+        "name",
+        "createdAt",
+        "__v"
+      ];
+      const opts = { fields };
+      const csv = parse(departments, opts);
+      res.attachment('customers.csv').send(csv)
     })
   } catch (error) {
-    return req.status(403).json(error)
+    return res.status(403).json(error)
   }
 }
 
