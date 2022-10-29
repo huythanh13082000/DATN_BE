@@ -4,7 +4,6 @@ const XLSX = require('xlsx')
 const exportExcel = (fields, data) => {
   try {
     const opts = { fields };
-    console.log(5555, opts);
     const csv = parse(data, opts);
     return csv
   } catch (error) {
