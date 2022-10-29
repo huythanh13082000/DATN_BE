@@ -1,33 +1,16 @@
+const { parse } = require('json2csv');
 const XLSX = require('xlsx')
 
-const exportExcel = async (data, fileName) => {
+const exportExcel = (fields, data) => {
   try {
-    const data1 = [{
-
-      firstName: 'John',
-
-      lastName: 'Doe'
-
-    }, {
-
-      firstName: 'Smith',
-
-      lastName: 'Peters'
-
-    }, {
-
-      firstName: 'Alice',
-
-      lastName: 'Lee'
-    }]
-    const ws = XLSX.utils.json_to_sheet(data1)
-    const wb = XLSX.utils.book_new()
-    XLSX.utils.book_append_sheet(wb, ws, 'Responses')
-    XLSX.writeFile(wb, `uploads/${fileName}.csv`)
+    const opts = { fields };
+    console.log(5555, opts);
+    const csv = parse(data, opts);
+    return csv
   } catch (error) {
-    console.log(error)
+    console.log(error);
+    return false
   }
-
 }
 
 module.exports = { exportExcel }

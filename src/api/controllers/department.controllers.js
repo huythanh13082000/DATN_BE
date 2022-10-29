@@ -5,7 +5,7 @@ const departmentModel = require("../models/department.model");
 const getListDepartment = async (req, res) => {
   const { limit, page, keyword } = req.query
   try {
-    await departmentModel.find().skip(page * limit - limit).limit(limit).exec((err, departments) => {
+    departmentModel.find().skip(page * limit - limit).limit(limit).exec((err, departments) => {
       departmentModel.countDocuments((err, count) => {
         if (err) {
           return next(err)
@@ -49,8 +49,7 @@ const deleteDepartment = async (req, res) => {
 }
 
 const exportExcelDepartment = async (req, res) => {
-  const { limit, page, keyword, nameFile } = req.query
-  console.log(222, nameFile)
+  const { limit, page, keyword } = req.query
   try {
     departmentModel.find().skip(page * limit - limit).limit(limit).exec(async (err, departments) => {
       console.log(departments);
@@ -58,11 +57,10 @@ const exportExcelDepartment = async (req, res) => {
         "_id",
         "name",
         "createdAt",
-        "__v"
       ];
-      const opts = { fields };
-      const csv = parse(departments, opts);
-      res.attachment('customers.csv').send(csv)
+      const newDeparments = departments.map((item) => { return { _id: item._id, name: item.name, createdAt: item.createdAt } })
+      const csv = exportExcel(fields, newDeparments)
+      res.attachment('departments.csv').send(csv)
     })
   } catch (error) {
     return res.status(403).json(error)
