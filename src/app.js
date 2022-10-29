@@ -34,7 +34,9 @@ var storage = multer.diskStorage({
     cb(null, 'uploads')
   },
   filename: function (req, file, cb) {
-    const fileName = file.fieldname + '-' + Date.now() + '.png'
+    const arrayOriginalnameSplited = file.originalname.split('.')
+    const typeFile = arrayOriginalnameSplited[arrayOriginalnameSplited.length - 1]
+    const fileName = file.fieldname + '-' + Date.now() + '.' + typeFile
     cb(null, fileName)
   }
 })
@@ -63,6 +65,13 @@ app.use('/api', allowanceRoute)
 app.use('/api', personnelAllowanceRoute)
 app.use('/api', notificationRoute)
 app.post('/uploadFile', middlewareAuth.verifyToken, upload.single('avatar'), uploadFile);
+app.post('/uploadFileCSV', middlewareAuth.verifyToken, upload.single('file'), uploadFile);
+const cpUpload = upload.fields([{ name: 'avatar', maxCount: 1 }, { name: 'file', maxCount: 1 }])
+app.post('/readFile', cpUpload, (req, res) => {
+  console.log(555555, req.files.avatar[0].path);
+  console.log(66666, req.files.file[0].path);
+  return res.json('sadasd')
+})
 
 
 module.exports = { app, upload }

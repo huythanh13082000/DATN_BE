@@ -1,4 +1,6 @@
 const express = require('express')
+const multer = require('multer');
+const upload = multer();
 const { getListDepartment, createDepartment, updateDepartment, deleteDepartment, exportExcelDepartment } = require('../controllers/department.controllers')
 const middlewareAuth = require('../middleware/auth')
 const departmentRoute = express.Router()
