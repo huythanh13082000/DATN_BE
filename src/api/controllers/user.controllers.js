@@ -21,21 +21,27 @@ const getListUser = async (req, res) => {
 }
 
 const createUser = async (req, res) => {
+  console.log(req.filename);
   const { username, passWord, email } = req.body
   const saft = await bcrypt.genSalt(10)
   const hash = await bcrypt.hash(passWord, saft)
   console.log(req.body)
   try {
-    await userModel.create({ username: username, passWord: hash, email: email })
+    await userModel.create({ username: username, passWord: hash, email: email, avatar: req.filename })
     return res.status(200).json('success')
   } catch (error) {
     return res.status(403).json(error)
   }
 }
 const defaultUser = async (req, res) => {
-  const idParams = req.query.id
-  const defaultUser = await userModel.findOne({ _id: idParams })
-  return res.json(defaultUser)
+  const idParams = req.user
+  try {
+    const defaultUser = await userModel.findOne({ _id: idParams })
+    return res.json({ email: defaultUser.email, username: defaultUser.username, avatar: defaultUser.avatar })
+  } catch (error) {
+    return res.status(403).json(error)
+  }
+
 }
 const deleteUser = async (req, res) => {
   const id = req.query.id

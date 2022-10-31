@@ -38,6 +38,7 @@ var storage = multer.diskStorage({
     const typeFile = arrayOriginalnameSplited[arrayOriginalnameSplited.length - 1]
     const fileName = file.fieldname + '-' + Date.now() + '.' + typeFile
     cb(null, fileName)
+    req.filename = fileName
   }
 })
 
