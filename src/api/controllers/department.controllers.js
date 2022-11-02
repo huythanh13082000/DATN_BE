@@ -12,7 +12,9 @@ const getListDepartment = async (req, res) => {
         if (err) {
           return next(err)
         }
-        else res.status(200).json({ list: departments, total: count })
+        else {
+          res.status(200).json({ list: departments, total: count })
+        }
       })
     })
   } catch (error) {
@@ -78,7 +80,7 @@ const getDepartmentColumn = async (req, res) => {
         departmentColumn.push(key)
       }
     })
-    return res.status(200).json({ columns: departmentColumn })
+    return res.status(200).json(departmentColumn)
   } catch (error) {
     return res.status(403).json(error)
   }
