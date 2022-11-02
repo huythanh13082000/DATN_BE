@@ -92,5 +92,29 @@ const refreshToken = async (req, res) => {
   else return res.status(403).json({ message: "refresh token not valid" })
 }
 
+const changePassword = async (req, res) => {
+  const { newPassWord, oldPassWord } = req.body
+  const user = await userModel.findOne({ _id: req.user._id })
+  if (user) {
+    const checkPassWord = await bcrypt.compare(oldPassWord, user.passWord)
+    if (checkPassWord) {
+      const saft = await bcrypt.genSalt(10)
+      const hash = await bcrypt.hash(newPassWord, saft)
+      try {
+        await userModel.findByIdAndUpdate({ _id: req.user._id }, { passWord: hash })
+        return res.status(200).json({ description: 'Update PassWord Success' })
+      } catch (error) {
+        return res.status(403).json(error)
+      }
+    }
+    else {
+      return res.status(403).json({ description: "oldPassword wrong!" })
+    }
+  }
+  else {
+    return res.json({ description: 'not find user' })
+  }
+}
 
-module.exports = { createUser, defaultUser, login, deleteUser, refreshToken, updateUser, getListUser }
+
+module.exports = { createUser, defaultUser, login, deleteUser, refreshToken, updateUser, getListUser, changePassword }

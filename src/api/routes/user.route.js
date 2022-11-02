@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 // const { upload } = require('../../app');
-const { createUser, defaultUser, login, deleteUser, refreshToken, updateUser, getListUser } = require('../controllers/user.controllers');
+const { createUser, defaultUser, login, deleteUser, refreshToken, updateUser, getListUser, changePassword } = require('../controllers/user.controllers');
 const middlewareAuth = require('../middleware/auth');
 const route = express.Router()
 var storage = multer.diskStorage({
@@ -30,5 +30,6 @@ userRoute.delete('/user/delete', middlewareAuth.verifyToken, deleteUser)
 userRoute.get('/user', middlewareAuth.verifyToken, getListUser)
 userRoute.put('/user/update', middlewareAuth.verifyToken, updateUser)
 userRoute.post('/auth/refreshtoken', refreshToken)
+userRoute.put('/user/changePassWord', middlewareAuth.verifyToken, changePassword)
 
 module.exports = userRoute
