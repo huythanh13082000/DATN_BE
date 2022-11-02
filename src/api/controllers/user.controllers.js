@@ -108,7 +108,7 @@ const changePassword = async (req, res) => {
       }
     }
     else {
-      return res.status(403).json({ description: "oldPassword wrong!" })
+      return res.status(403).json({ description: "Old Password wrong!" })
     }
   }
   else {

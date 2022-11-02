@@ -1,5 +1,6 @@
 const { parse } = require("json2csv");
 const { exportExcel } = require("../helper/exportExcel");
+const departmentSchema = require("../models/department.model");
 const departmentModel = require("../models/department.model");
 
 const getListDepartment = async (req, res) => {
@@ -67,4 +68,19 @@ const exportExcelDepartment = async (req, res) => {
   }
 }
 
-module.exports = { createDepartment, updateDepartment, deleteDepartment, getListDepartment, exportExcelDepartment }
+const getDepartmentColumn = async (req, res) => {
+  try {
+    const departmentColumn = []
+    Object.keys(departmentSchema.tree).forEach((key, index) => {
+      if (!key.includes('_')) {
+        departmentColumn.push(key)
+      }
+    })
+    return res.status(200).json({ columns: departmentColumn })
+  } catch (error) {
+    return res.status(403).json(error)
+  }
+
+}
+
+module.exports = { createDepartment, updateDepartment, deleteDepartment, getListDepartment, exportExcelDepartment, getDepartmentColumn }

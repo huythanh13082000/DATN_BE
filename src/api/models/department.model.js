@@ -8,3 +8,4 @@ const departmentSchema = new mongoose.Schema({
 
 const departmentModel = mongoose.model('department', departmentSchema)
 module.exports = departmentModel
+module.exports = departmentSchema

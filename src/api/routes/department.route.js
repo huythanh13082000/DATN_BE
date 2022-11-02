@@ -1,7 +1,7 @@
 const express = require('express')
 const multer = require('multer');
 const upload = multer();
-const { getListDepartment, createDepartment, updateDepartment, deleteDepartment, exportExcelDepartment } = require('../controllers/department.controllers')
+const { getListDepartment, createDepartment, updateDepartment, deleteDepartment, exportExcelDepartment, getDepartmentColumn } = require('../controllers/department.controllers')
 const middlewareAuth = require('../middleware/auth')
 const departmentRoute = express.Router()
 
@@ -10,5 +10,6 @@ departmentRoute.post('/departments', middlewareAuth.verifyToken, createDepartmen
 departmentRoute.put('/departments/:id', middlewareAuth.verifyToken, updateDepartment)
 departmentRoute.delete('/departments/:id', middlewareAuth.verifyToken, deleteDepartment)
 departmentRoute.get('/departments/export-excel', middlewareAuth.verifyToken, exportExcelDepartment)
+departmentRoute.get('/departments/columns', middlewareAuth.verifyToken, getDepartmentColumn)
 
 module.exports = departmentRoute

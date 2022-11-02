@@ -18,5 +18,8 @@ const personnelSchema = new mongoose.Schema({
   note: String,
   status: Boolean
 })
+
 const personnelModel = mongoose.model('personnel', personnelSchema)
 module.exports = personnelModel
+
+
