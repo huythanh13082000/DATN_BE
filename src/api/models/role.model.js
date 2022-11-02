@@ -7,3 +7,4 @@ const roleSchema = new mongoose.Schema({
 
 const roleModel = mongoose.model('roles', roleSchema)
 module.exports = roleModel
+module.exports = roleSchema

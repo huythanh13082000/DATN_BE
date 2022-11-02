@@ -9,3 +9,4 @@ const salaryAdvanceSchema = new mongoose.Schema({
 
 const salaryAdvanceModel = mongoose.model('salaryAdvance', salaryAdvanceSchema)
 module.exports = salaryAdvanceModel
+module.exports = salaryAdvanceSchema

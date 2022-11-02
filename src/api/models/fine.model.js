@@ -8,3 +8,4 @@ const fineSchema = new mongoose.Schema({
 
 const fineModel = mongoose.model('fine', fineSchema)
 module.exports = fineModel
+module.exports = fineSchema

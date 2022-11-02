@@ -9,3 +9,4 @@ const rankSchema = new mongoose.Schema({
 })
 const rankModel = mongoose.model('rank', rankSchema)
 module.exports = rankModel
+module.exports = rankSchema

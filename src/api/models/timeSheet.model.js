@@ -10,3 +10,4 @@ const timeSheetSchema = new mongoose.Schema({
 })
 const timeSheetModel = mongoose.model('timeSheet', timeSheetSchema)
 module.exports = timeSheetModel
+module.exports = timeSheetSchema
