@@ -21,6 +21,5 @@ const personnelSchema = new mongoose.Schema({
 
 const personnelModel = mongoose.model('personnel', personnelSchema)
 module.exports = personnelModel
-module.exports = personnelSchema
 
 

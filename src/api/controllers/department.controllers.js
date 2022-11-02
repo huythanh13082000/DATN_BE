@@ -5,6 +5,7 @@ const departmentModel = require("../models/department.model");
 
 const getListDepartment = async (req, res) => {
   const { limit, page, keyword } = req.query
+  console.log(33444)
   try {
     departmentModel.find().skip(page * limit - limit).limit(limit).exec((err, departments) => {
       departmentModel.countDocuments((err, count) => {
@@ -70,8 +71,9 @@ const exportExcelDepartment = async (req, res) => {
 
 const getDepartmentColumn = async (req, res) => {
   try {
+    console.log(111, departmentModel.distinct().schema.paths)
     const departmentColumn = []
-    Object.keys(departmentSchema.tree).forEach((key, index) => {
+    Object.keys(departmentModel.distinct().schema.paths).forEach((key, index) => {
       if (!key.includes('_')) {
         departmentColumn.push(key)
       }

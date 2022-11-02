@@ -9,4 +9,3 @@ const contractSchema = new mongoose.Schema({
 const contractModel = mongoose.model('contract', contractSchema)
 
 module.exports = contractModel
-module.exports = contractSchema
