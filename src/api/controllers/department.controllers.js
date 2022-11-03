@@ -1,6 +1,5 @@
 const { parse } = require("json2csv");
 const { exportExcel } = require("../helper/exportExcel");
-const departmentSchema = require("../models/department.model");
 const departmentModel = require("../models/department.model");
 
 const getListDepartment = async (req, res) => {
@@ -43,14 +42,15 @@ const updateDepartment = async (req, res) => {
   }
 }
 const deleteDepartment = async (req, res) => {
-  const _id = req.params.id
   try {
-    await departmentModel.findByIdAndDelete({ _id })
-    return req.status(200).json('delete department success')
+    const ids = req.body.id
+    await departmentModel.deleteMany({ _id: { $in: ids } })
+    return res.status(200).json('delete department success')
   } catch (error) {
-    return req.status(403).json(error)
+    return res.status(403).json(error)
   }
 }
+
 
 const exportExcelDepartment = async (req, res) => {
   const { limit, page, keyword } = req.query
@@ -84,7 +84,6 @@ const getDepartmentColumn = async (req, res) => {
   } catch (error) {
     return res.status(403).json(error)
   }
-
 }
 
 module.exports = { createDepartment, updateDepartment, deleteDepartment, getListDepartment, exportExcelDepartment, getDepartmentColumn }
