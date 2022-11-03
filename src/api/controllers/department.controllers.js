@@ -32,10 +32,9 @@ const createDepartment = async (req, res) => {
   }
 }
 const updateDepartment = async (req, res) => {
-  const data = req.body
-  const _id = req.params.id
+  const { _id, name } = req.body
   try {
-    await departmentModel.findByIdAndUpdate({ _id }, { ...data, updatedAt: Date.now() })
+    await departmentModel.findByIdAndUpdate({ _id }, { name: name, updatedAt: Date.now() })
     return res.status(200).json('update department success')
   } catch (error) {
     return res.status(403).json(error)
