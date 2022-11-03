@@ -43,7 +43,8 @@ const updateDepartment = async (req, res) => {
 }
 const deleteDepartment = async (req, res) => {
   try {
-    const ids = req.body.id
+    const ids = req.body.ids
+    console.log(ids);
     await departmentModel.deleteMany({ _id: { $in: ids } })
     return res.status(200).json('delete department success')
   } catch (error) {
