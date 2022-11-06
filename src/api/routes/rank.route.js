@@ -3,10 +3,10 @@ const { createRank, getListRank, getRank, updateRank, deleteRank } = require('..
 const middlewareAuth = require('../middleware/auth')
 const rankRoute = express.Router()
 
-rankRoute.post('/rank', middlewareAuth.verifyToken, createRank)
-rankRoute.get('/rank', middlewareAuth.verifyToken, getListRank)
-rankRoute.get('/rank/:id', middlewareAuth.verifyToken, getRank)
-rankRoute.put('/rank/:id', middlewareAuth.verifyToken, updateRank)
-rankRoute.delete('/rank/:id', middlewareAuth.verifyToken, deleteRank)
+rankRoute.post('/ranks', middlewareAuth.verifyToken, createRank)
+rankRoute.get('/ranks', middlewareAuth.verifyToken, getListRank)
+rankRoute.get('/ranks/:id', middlewareAuth.verifyToken, getRank)
+rankRoute.put('/ranks', middlewareAuth.verifyToken, updateRank)
+rankRoute.delete('/ranks', middlewareAuth.verifyToken, deleteRank)
 
 module.exports = rankRoute

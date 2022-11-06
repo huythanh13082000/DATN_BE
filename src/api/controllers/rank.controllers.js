@@ -12,10 +12,11 @@ const createRank = async (req, res) => {
   }
 }
 const updateRank = async (req, res) => {
-  const data = req.body
-  const _id = req.params.id
+
   try {
-    await rankModel.findByIdAndUpdate({ _id }, { ...data, updatedAt: Date.now() })
+    const data = req.body
+    await rankModel.findByIdAndUpdate({ _id: data._id },
+      { department: data.department, name: data.name, value: data.value, updatedAt: Date.now() })
     const rank = await rankModel.findById({ _id })
     return res.status(200).json({ data: rank, description: 'Update Rank Success' })
   } catch (error) {
@@ -23,20 +24,19 @@ const updateRank = async (req, res) => {
   }
 }
 const deleteRank = async (req, res) => {
-  const _id = req.params.id
   try {
-    await rankModel.findByIdAndDelete({ _id })
+    const ids = req.body.ids
+    console.log(ids);
+    await rankModel.deleteMany({ _id: { $in: ids } })
     return res.status(200).json({ description: 'Delete Rank Success' })
   } catch (error) {
     return res.status(403).json(error)
-
   }
 }
 const getListRank = async (req, res) => {
   const { limit, page, keyword } = req.query
   try {
     rankModel.find({}).populate('department').skip(page * limit - limit).limit(limit).exec((err, ranks) => {
-      console.log(222, ranks)
       rankModel.countDocuments((err, count) => {
         return res.status(200).json({ list: ranks, total: count, description: 'Fetching List Rank Success' })
       })
