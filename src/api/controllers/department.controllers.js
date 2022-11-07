@@ -26,7 +26,7 @@ const createDepartment = async (req, res) => {
   const data = req.body;
   try {
     await departmentModel.create({ ...data })
-    res.status(200).json('create department success')
+    res.status(200).json({ description: 'Create Department Success' })
   } catch (error) {
     res.status(403).json(error)
   }
@@ -35,7 +35,7 @@ const updateDepartment = async (req, res) => {
   const { _id, name } = req.body
   try {
     await departmentModel.findByIdAndUpdate({ _id }, { name: name, updatedAt: Date.now() })
-    return res.status(200).json('update department success')
+    return res.status(200).json({ description: 'Update Department Success' })
   } catch (error) {
     return res.status(403).json(error)
   }
@@ -45,7 +45,7 @@ const deleteDepartment = async (req, res) => {
     const ids = req.body.ids
     console.log(ids);
     await departmentModel.deleteMany({ _id: { $in: ids } })
-    return res.status(200).json('delete department success')
+    return res.status(200).json({ description: 'Delete Rank Success' })
   } catch (error) {
     return res.status(403).json(error)
   }

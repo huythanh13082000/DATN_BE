@@ -15,9 +15,10 @@ const updateRank = async (req, res) => {
 
   try {
     const data = req.body
+    const newdata = { name: data.name, value: data.value, department: data.department }
     await rankModel.findByIdAndUpdate({ _id: data._id },
-      { department: data.department, name: data.name, value: data.value, updatedAt: Date.now() })
-    const rank = await rankModel.findById({ _id })
+      { ...newdata, updatedAt: Date.now() })
+    const rank = await rankModel.findById({ _id: data._id })
     return res.status(200).json({ data: rank, description: 'Update Rank Success' })
   } catch (error) {
     return res.status(403).json(error)
