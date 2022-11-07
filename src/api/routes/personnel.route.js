@@ -3,10 +3,10 @@ const { createPersonnel, updatePersonnel, deletePersonnel, getPersonnel, getList
 const middlewareAuth = require('../middleware/auth')
 const personnelRoute = express.Router()
 
-personnelRoute.post('/personnel', middlewareAuth.verifyToken, createPersonnel)
-personnelRoute.put('/personnel/:id', middlewareAuth.verifyToken, updatePersonnel)
-personnelRoute.delete('/personnel/:id', middlewareAuth.verifyToken, deletePersonnel)
+personnelRoute.post('/personnels', middlewareAuth.verifyToken, createPersonnel)
+personnelRoute.put('/personnels', middlewareAuth.verifyToken, updatePersonnel)
+personnelRoute.delete('/personnels', middlewareAuth.verifyToken, deletePersonnel)
 personnelRoute.get('/personnel/:id', middlewareAuth.verifyToken, getPersonnel)
-personnelRoute.get('/personnel', middlewareAuth.verifyToken, getListPersonnel)
+personnelRoute.get('/personnels', middlewareAuth.verifyToken, getListPersonnel)
 
 module.exports = personnelRoute

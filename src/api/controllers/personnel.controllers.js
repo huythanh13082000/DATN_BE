@@ -12,10 +12,9 @@ const createPersonnel = async (req, res) => {
 }
 const updatePersonnel = async (req, res) => {
   const data = req.body
-  const _id = req.params.id
   try {
-    await personnelModel.findByIdAndUpdate({ _id }, { ...data, updatedAt: Date.now() })
-    const personnel = await personnelModel.findOne({ _id })
+    await personnelModel.findByIdAndUpdate({ _id: data._id }, { ...data, updatedAt: Date.now() })
+    const personnel = await personnelModel.findOne({ _id: data._id })
     return res.status(200).json({ data: personnel, description: 'Update Personnel Success' })
   } catch (error) {
     return res.status(403).json(error)
@@ -44,9 +43,10 @@ const getListPersonnel = async (req, res) => {
   }
 }
 const deletePersonnel = async (req, res) => {
-  const _id = req.params.id
   try {
-    await personnelModel.findByIdAndDelete({ _id })
+    const ids = req.body.ids
+    console.log(ids);
+    await personnelModel.deleteMany({ _id: { $in: ids } })
     return res.status(200).json({ description: 'Delete Personnel Success' })
   } catch (error) {
     return res.status(403).json(error)
