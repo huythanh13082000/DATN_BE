@@ -12,7 +12,7 @@ const personnelSchema = new mongoose.Schema({
   IDCard: String,
   createdAt: { type: Date, required: true, default: Date.now },
   updatedAt: { type: Date },
-  dateOfBirth: { type: Date },
+  dateOfBirth: { type: String },
   sex: 'male' | 'female',
   avatar: String,
   note: String,
