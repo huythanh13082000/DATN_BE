@@ -14,8 +14,8 @@ const createPersonnel = async (req, res) => {
   }
 }
 const updatePersonnel = async (req, res) => {
-  const data = req.body
   try {
+    const data = req.body
     await personnelModel.findByIdAndUpdate({ _id: data._id }, { ...data, updatedAt: Date.now() })
     const personnel = await personnelModel.findOne({ _id: data._id })
     return res.status(200).json({ data: personnel, description: 'Update Personnel Success' })
