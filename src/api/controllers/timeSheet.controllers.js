@@ -1,11 +1,32 @@
+const personnelModel = require("../models/personnel.model")
 const timeSheetModel = require("../models/timeSheet.model")
 
-const createTimeSheet = async (req, res) => {
+const createTimeSheetMany = async (req, res) => {
   try {
     const data = req.body
     const timeSheets = await timeSheetModel.insertMany(data)
     return res.status(200).json({ data: timeSheets, description: "Create TimeSheet Success" })
   } catch (error) {
+    return res.status(403).json(error)
+  }
+}
+
+const createTimeSheet = async (req, res) => {
+  try {
+    const data = req.body
+    const timeSheets = await timeSheetModel.create(data)
+    return res.status(200).json({ data: timeSheets, description: "Create TimeSheet Success" })
+  } catch (error) {
+    return res.status(403).json(error)
+  }
+}
+const getListPersonnelTimeSheet = async (req, res) => {
+  try {
+    const listPersonnel = await personnelModel.find({}).populate('rank')
+    console.log(listPersonnel);
+    return res.status(200).json({ data: listPersonnel })
+  } catch (error) {
+    console.log(error)
     return res.status(403).json(error)
   }
 }
@@ -56,4 +77,4 @@ const getListTimeSheet = async (req, res) => {
   }
 }
 
-module.exports = { createTimeSheet, updateTimeSheet, deleteTimeSheet, getTimeSheet, getListTimeSheet }
+module.exports = { createTimeSheetMany, updateTimeSheet, deleteTimeSheet, getTimeSheet, getListTimeSheet, getListPersonnelTimeSheet,createTimeSheet }
