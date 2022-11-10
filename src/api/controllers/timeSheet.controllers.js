@@ -1,10 +1,10 @@
 const timeSheetModel = require("../models/timeSheet.model")
 
 const createTimeSheet = async (req, res) => {
-  const data = req.body
   try {
-    const timeSheet = await timeSheetModel.create({ ...data })
-    return res.status(200).json({ data: timeSheet, description: "Create TimeSheet Success" })
+    const data = req.body
+    const timeSheets = await timeSheetModel.insertMany(data)
+    return res.status(200).json({ data: timeSheets, description: "Create TimeSheet Success" })
   } catch (error) {
     return res.status(403).json(error)
   }
@@ -21,9 +21,13 @@ const updateTimeSheet = async (req, res) => {
   }
 }
 const deleteTimeSheet = async (req, res) => {
-  const _id = req.params.id
+  // start today
+  const start = moment().startOf('day');
+  // end today
+  const end = moment(today).endOf('day');
+  // const _id = req.params.id
   try {
-    await timeSheetModel.findByIdAndDelete({ _id })
+    await timeSheetModel.findByIdAndDelete({ createdAt: { '$gte': start, '$lte': end } })
     return res.status(200).json({ description: "Delete TimeSheet Succes" })
   } catch (error) {
     return res.status(403).json(error)
