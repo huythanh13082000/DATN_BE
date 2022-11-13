@@ -1,4 +1,5 @@
 const moment = require("moment/moment")
+const { populate } = require("../models/personnel.model")
 const personnelModel = require("../models/personnel.model")
 const timeSheetModel = require("../models/timeSheet.model")
 
@@ -11,15 +12,16 @@ const createTimeSheetMany = async (req, res) => {
     const start = moment(workingDay).startOf('day');
     // end today
     const end = moment(workingDay).endOf('day');
-    const lisTimeSheet = await timeSheetModel.find({ workingDay: { $gte: start, $lte: end } })
+    const lisTimeSheet = await timeSheetModel.find({ workingDay: { $gte: start, $lte: end } }).populate('personnel')
     console.log(5555, lisTimeSheet);
     if (lisTimeSheet.length === 0) {
       const listPersonnel = await personnelModel.find()
       console.log(43333, listPersonnel);
       const data = listPersonnel.map((item) => {
-        return { personnel: item._id, workingDay: workingDay, status: '0' }
+        return { personnel: item._id, workingDay: workingDay, status: 1 }
       })
-      const timeSheets = await timeSheetModel.insertMany(data)
+      await timeSheetModel.insertMany(data)
+      const timeSheets = await timeSheetModel.find({ workingDay: { $gte: start, $lte: end } }).populate('personnel')
       return res.status(200).json({ data: timeSheets, description: `Create TimeSheet ${moment(workingDay).format('DD/MM/YYYY')} Success` })
     }
     else {
@@ -50,11 +52,11 @@ const getListPersonnelTimeSheet = async (req, res) => {
   }
 }
 const updateTimeSheet = async (req, res) => {
-  const _id = req.params.id
-  const data = req.body
+  // const _id = req.params.id
   try {
-    await timeSheetModel.findByIdAndUpdate({ _id }, { ...data, updatedAt: Date.now() })
-    const timeSheet = await timeSheetModel.findOne({ _id })
+    const data = req.body
+    await timeSheetModel.findByIdAndUpdate({ _id: data._id }, { status: data.status, updatedAt: Date.now() })
+    const timeSheet = await timeSheetModel.findOne({ _id: data._id })
     return res.status(200).json({ data: timeSheet, description: 'Update TimeSheet Success' })
   } catch (error) {
     return res.status(403).json(error)
@@ -62,12 +64,17 @@ const updateTimeSheet = async (req, res) => {
 }
 const deleteTimeSheet = async (req, res) => {
   // start today
-  const start = moment().startOf('day');
+  const workingDay = req.body.workingDay
+  const start = moment(workingDay).startOf('day');
   // end today
-  const end = moment(today).endOf('day');
+  const end = moment(workingDay).endOf('day');
   // const _id = req.params.id
   try {
-    await timeSheetModel.findByIdAndDelete({ createdAt: { '$gte': start, '$lte': end } })
+    const listTimeSheet = await timeSheetModel.find({ workingDay: { $gte: start, $lte: end } })
+    if (listTimeSheet.length === 0) {
+      return res.status(200).json({ description: `No data found ${moment(workingDay).format('DD/MM/YYYY')}` })
+    }
+    await timeSheetModel.deleteMany({ workingDay: { $gte: start, $lte: end } })
     return res.status(200).json({ description: "Delete TimeSheet Succes" })
   } catch (error) {
     return res.status(403).json(error)
@@ -76,7 +83,7 @@ const deleteTimeSheet = async (req, res) => {
 const getTimeSheet = async (req, res) => {
   const _id = req.params.id
   try {
-    const timeSheet = await timeSheetModel.findOne({ _id }).populate('personnel').populate('department')
+    const timeSheet = await timeSheetModel.findOne({ _id }).populate('personnel')
     return res.status(200).json({ data: timeSheet, description: "Fetching TimeSheet Success" })
   } catch (error) {
     return res.status(403).json(error)
@@ -84,9 +91,9 @@ const getTimeSheet = async (req, res) => {
 }
 
 const getListTimeSheet = async (req, res) => {
-  const { limit, page, keyword } = req.query
   try {
-    timeSheetModel.find().populate('personnel').populate('department').skip(limit * page - limit).limit(limit).exec((err, timeSheets) => {
+    const { limit, page, keyword } = req.query
+    timeSheetModel.find().populate('personnel').skip(limit * page - limit).limit(limit).exec((err, timeSheets) => {
       timeSheetModel.countDocuments((err, count) => {
         return res.status(200).json({ list: timeSheets, total: count, description: "Fetching List TimeSheet Succes" })
       })

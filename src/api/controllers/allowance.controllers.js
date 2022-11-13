@@ -1,8 +1,8 @@
 const allowanceModel = require("../models/allowance.model")
 
 const createAllowance = async (req, res) => {
-  const data = req.body
   try {
+    const data = req.body
     const allowance = await allowanceModel.create({ ...data })
     return res.status(200).json({ data: allowance, description: "Create Allowance Success" })
   } catch (error) {
@@ -11,20 +11,21 @@ const createAllowance = async (req, res) => {
 }
 
 const updateAllowance = async (req, res) => {
-  const data = req.body
-  const _id = req.params.id
+
   try {
-    await allowanceModel.findByIdAndUpdate({ _id }, { ...data, updatedAt: Date.now() })
-    const allowance = await allowanceModel.findOne({ _id })
+    const data = req.body
+    await allowanceModel.findByIdAndUpdate({ _id: data._id }, { ...data, updatedAt: Date.now() })
+    const allowance = await allowanceModel.findOne({ _id: data._id })
     return res.status(200).json({ data: allowance, description: "Update Allowance Success" })
   } catch (error) {
     return res.status(403).json(error)
   }
 }
 const deleteAllowance = async (req, res) => {
-  const _id = req.params.id
+
   try {
-    await allowanceModel.findByIdAndDelete({ _id })
+    const ids = req.body.ids
+    await allowanceModel.deleteMany({ _id: { $in: ids } })
     return res.status(200).json({ description: "Delete Allowance Success" })
   } catch (error) {
     return res.status(403).json(error)

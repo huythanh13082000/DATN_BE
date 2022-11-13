@@ -1,8 +1,9 @@
 const bonusModel = require("../models/bonus.model")
 
 const createBonus = async (req, res) => {
-  const data = req.body
+
   try {
+    const data = req.body
     const bonus = await bonusModel.create({ ...data })
     return res.status(200).json({ data: bonus, description: "Create Bonus Success" })
   } catch (error) {
@@ -11,20 +12,19 @@ const createBonus = async (req, res) => {
 }
 
 const updateBonus = async (req, res) => {
-  const data = req.body
-  const _id = req.params.id
   try {
-    await bonusModel.findByIdAndUpdate({ _id }, { ...data, updatedAt: Date.now() })
-    const bonus = await bonusModel.findOne({ _id })
+    const data = req.body
+    await bonusModel.findByIdAndUpdate({ _id: data._id }, { ...data, updatedAt: Date.now() })
+    const bonus = await bonusModel.findOne({ _id: data._id })
     return res.status(200).json({ data: bonus, description: "Update Bonus Success" })
   } catch (error) {
     return res.status(403).json(error)
   }
 }
 const deleteBonus = async (req, res) => {
-  const _id = req.params.id
   try {
-    await bonusModel.findByIdAndDelete({ _id })
+    const ids = req.body.ids
+    await bonusModel.deleteMany({ _id: { $in: ids } })
     return res.status(200).json({ description: "Delete Bonus Success" })
   } catch (error) {
     return res.status(403).json(error)

@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const bonusSchema = mongoose.Schema({
   name: String,
-  value: Number,
+  value: String,
   createdAt: { type: Date, required: true, default: Date.now() },
   updatedAt: { type: Date },
 })
