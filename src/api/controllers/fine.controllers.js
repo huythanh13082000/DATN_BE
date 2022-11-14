@@ -1,8 +1,8 @@
 const fineModel = require("../models/fine.model")
 
 const createFine = async (req, res) => {
-  const data = req.body
   try {
+    const data = req.body
     const fine = fineModel.create({ ...data })
     return res.status(200).json({ data: fine, description: "Create Fine Success" })
   } catch (error) {
@@ -11,20 +11,20 @@ const createFine = async (req, res) => {
 }
 
 const updateFine = async (req, res) => {
-  const data = req.body
-  const _id = req.params.id
   try {
-    await fineModel.findByIdAndUpdate({ _id }, { ...data, updatedAt: Date.now() })
-    const fine = await fineModel.findOne({ _id })
+    const data = req.body
+    console.log(333, data)
+    await fineModel.findByIdAndUpdate({ _id: data._id }, { ...data, updatedAt: Date.now() })
+    const fine = await fineModel.findOne({ _id: data._id })
     return res.status(200).json({ data: fine, description: "Update Fine Success" })
   } catch (error) {
     return res.status(403).json(error)
   }
 }
 const deleteFine = async (req, res) => {
-  const _id = req.params.id
   try {
-    await fineModel.findByIdAndDelete({ _id })
+    const ids = req.body.ids
+    await fineModel.findByIdAndDelete({ _id: { $in: ids } })
     return res.status(200).json({ description: "Delete Fine Success" })
   } catch (error) {
     return res.status(403).json(error)
@@ -52,4 +52,4 @@ const getListFine = async (req, res) => {
   }
 }
 
-module.exports = { createFine, updateFine, deleteFine, getFine ,getListFine}
+module.exports = { createFine, updateFine, deleteFine, getFine, getListFine }

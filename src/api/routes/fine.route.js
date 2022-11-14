@@ -3,10 +3,10 @@ const { createFine, updateFine, deleteFine, getFine, getListFine } = require('..
 const middlewareAuth = require('../middleware/auth')
 const fineRoute = express.Router()
 
-fineRoute.post('/fine', middlewareAuth.verifyToken, createFine)
-fineRoute.put('/fine/:id', middlewareAuth.verifyToken, updateFine)
-fineRoute.delete('/fine/:id', middlewareAuth.verifyToken, deleteFine)
-fineRoute.get('/fine/:id', middlewareAuth.verifyToken, getFine)
-fineRoute.get('/fine', middlewareAuth.verifyToken, getListFine)
+fineRoute.post('/fines', middlewareAuth.verifyToken, createFine)
+fineRoute.put('/fines', middlewareAuth.verifyToken, updateFine)
+fineRoute.delete('/fines', middlewareAuth.verifyToken, deleteFine)
+fineRoute.get('/fines/:id', middlewareAuth.verifyToken, getFine)
+fineRoute.get('/fines', middlewareAuth.verifyToken, getListFine)
 
 module.exports = fineRoute
