@@ -59,7 +59,7 @@ const login = async (req, res) => {
   const user = await userModel.findOne({ email })
   console.log(user)
   if (user) {
-    const checkPassWord = bcrypt.compare(passWord, user.passWord)
+    const checkPassWord = await bcrypt.compare(passWord, user.passWord)
     if (checkPassWord) {
       const tokens = generateToken({ _id: user._id })
       console.log(1111, tokens);
