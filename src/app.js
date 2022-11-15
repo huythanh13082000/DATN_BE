@@ -53,7 +53,10 @@ async function main() {
   const uri = process.env.URL
   console.log(uri)
   // "mongodb+srv://phthanh1308:Phamhuythanh1308@cluster0.6u4juwz.mongodb.net/DATN";
-  mongoose.connect(uri);
+  mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true },
+    () => {
+      console.log('Connected to MongoDB');
+    });
   // use `await mongoose.connect('mongodb://user:password@localhost:27017/test');` if your database has auth enabled
 }
 app.use('/api', userRoute)
