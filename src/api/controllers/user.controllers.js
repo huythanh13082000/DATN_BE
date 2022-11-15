@@ -28,6 +28,7 @@ const createUser = async (req, res) => {
   console.log(req.body)
   try {
     await userModel.create({ username: username, passWord: hash, email: email, avatar: req.filename })
+    console.log(123)
     return res.status(200).json('success')
   } catch (error) {
     return res.status(403).json(error)

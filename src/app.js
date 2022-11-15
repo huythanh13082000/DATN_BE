@@ -53,6 +53,7 @@ async function main() {
   // const uri = process.env.URL
   // console.log(uri)
   // "mongodb+srv://phthanh1308:Phamhuythanh1308@cluster0.6u4juwz.mongodb.net/DATN";
+  console.log(444, process.env.URL)
   mongoose.connect(process.env.URL,
     () => {
       console.log('Connected to MongoDB');
