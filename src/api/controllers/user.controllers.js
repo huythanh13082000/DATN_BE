@@ -22,12 +22,12 @@ const getListUser = async (req, res) => {
 
 const createUser = async (req, res) => {
   console.log(req.filename);
-  const { username, passWord, email } = req.body
+  const { passWord, email } = req.body
   const saft = await bcrypt.genSalt(10)
   const hash = await bcrypt.hash(passWord, saft)
   console.log(req.body)
   try {
-    await userModel.create({ username: username, passWord: hash, email: email, avatar: req.filename })
+    await userModel.create({ passWord: hash, email: email, avatar: req.filename })
     console.log(123)
     return res.status(200).json('success')
   } catch (error) {
@@ -38,7 +38,7 @@ const defaultUser = async (req, res) => {
   const idParams = req.user
   try {
     const defaultUser = await userModel.findOne({ _id: idParams })
-    return res.json({ email: defaultUser.email, username: defaultUser.username, avatar: defaultUser.avatar })
+    return res.json({ email: defaultUser.email, avatar: defaultUser.avatar })
   } catch (error) {
     return res.status(403).json(error)
   }
@@ -55,20 +55,20 @@ const deleteUser = async (req, res) => {
 }
 
 const login = async (req, res) => {
-  const { username, passWord } = req.body
-  const user = await userModel.findOne({ username })
+  const { email, passWord } = req.body
+  const user = await userModel.findOne({ email })
   console.log(user)
   if (user) {
-    const checkPassWord = await bcrypt.compare(passWord, user.passWord)
+    const checkPassWord = bcrypt.compare(passWord, user.passWord)
     if (checkPassWord) {
       const tokens = generateToken({ _id: user._id })
       console.log(1111, tokens);
       await userModel.findOneAndUpdate({ _id: user._id }, { refreshToken: tokens.refreshToken })
       return res.status(200).json(tokens)
     }
-    else return res.status(403).json({ message: "usernam or password wrong" })
+    else return res.status(403).json({ message: "Email or password wrong" })
   }
-  else return res.status(403).json({ message: "usernam or password wrong" })
+  else return res.status(403).json({ message: "Email or password wrong" })
 
 }
 const updateUser = async (req, res) => {

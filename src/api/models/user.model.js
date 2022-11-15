@@ -1,10 +1,9 @@
 const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema({
-  username: { type: String, unique: true },
   passWord: String,
   roleId: String,
-  email: String,
+  email: { type: String, unique: true },
   refreshToken: String,
   avatar: String,
   createdAt: { type: Date, required: true, default: Date.now },
