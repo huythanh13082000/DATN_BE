@@ -50,10 +50,10 @@ const upload = multer({ storage: storage })
 main().catch(err => console.log(err));
 
 async function main() {
-  const uri = process.env.URL
-  console.log(uri)
+  // const uri = process.env.URL
+  // console.log(uri)
   // "mongodb+srv://phthanh1308:Phamhuythanh1308@cluster0.6u4juwz.mongodb.net/DATN";
-  mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true },
+  mongoose.connect(process.env.URL,
     () => {
       console.log('Connected to MongoDB');
     });
