@@ -18,7 +18,7 @@ const fineRoute = require('./api/routes/fine.route');
 const allowanceRoute = require('./api/routes/allowance.route');
 const personnelAllowanceRoute = require('./api/routes/personnelAllowance.route');
 const notificationRoute = require('./api/routes/notification.route');
-// var cors = require('cors')
+var cors = require('cors')
 require('dotenv').config()
 
 const app = express()
@@ -27,7 +27,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true, limit: '30mb' }));
 app.use(express.static('uploads'))
 app.use(bodyParser.urlencoded({ extended: true }))
-// app.use(cors())
+app.use(cors())
 
 // SET STORAGE
 var storage = multer.diskStorage({
