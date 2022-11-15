@@ -19,6 +19,7 @@ const allowanceRoute = require('./api/routes/allowance.route');
 const personnelAllowanceRoute = require('./api/routes/personnelAllowance.route');
 const notificationRoute = require('./api/routes/notification.route');
 var cors = require('cors')
+require('dotenv').config()
 
 const app = express()
 app.use(morgan('combined'))
@@ -49,8 +50,8 @@ const upload = multer({ storage: storage })
 main().catch(err => console.log(err));
 
 async function main() {
-  const uri =
-    "mongodb+srv://phthanh1308:Phamhuythanh1308@cluster0.6u4juwz.mongodb.net/DATN";
+  const uri = process.env.URL
+  // "mongodb+srv://phthanh1308:Phamhuythanh1308@cluster0.6u4juwz.mongodb.net/DATN";
   await mongoose.connect(uri);
   // use `await mongoose.connect('mongodb://user:password@localhost:27017/test');` if your database has auth enabled
 }
