@@ -27,7 +27,17 @@ const updatePersonnel = async (req, res) => {
 const getPersonnel = async (req, res) => {
   const _id = req.params.id
   try {
-    const personnel = await personnelModel.findOne({ _id }).populate('rank').populate('department')
+    const personnel = await personnelModel.findOne({ _id }).populate('rank')
+    return res.status(200).json({ data: personnel, description: 'Fetching Personnel Success' })
+  } catch (error) {
+    return res.status(403).json(error)
+  }
+}
+
+const getPersonnelEmail = async (req, res) => {
+  const email = req.params.email
+  try {
+    const personnel = await personnelModel.findOne({ email }).populate('rank')
     return res.status(200).json({ data: personnel, description: 'Fetching Personnel Success' })
   } catch (error) {
     return res.status(403).json(error)
@@ -57,4 +67,4 @@ const deletePersonnel = async (req, res) => {
   }
 }
 
-module.exports = { createPersonnel, updatePersonnel, getPersonnel, getListPersonnel, deletePersonnel }
+module.exports = { createPersonnel, updatePersonnel, getPersonnel, getListPersonnel, deletePersonnel ,getPersonnelEmail}

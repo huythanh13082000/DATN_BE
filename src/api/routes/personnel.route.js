@@ -1,6 +1,6 @@
 const express = require('express')
 const multer = require('multer')
-const { createPersonnel, updatePersonnel, deletePersonnel, getPersonnel, getListPersonnel } = require('../controllers/personnel.controllers')
+const { createPersonnel, updatePersonnel, deletePersonnel, getPersonnel, getListPersonnel, getPersonnelEmail } = require('../controllers/personnel.controllers')
 const middlewareAuth = require('../middleware/auth')
 const personnelRoute = express.Router()
 
@@ -22,7 +22,8 @@ const upload = multer({ storage: storage }).single('avatar')
 personnelRoute.post('/personnels', middlewareAuth.verifyToken, upload, createPersonnel)
 personnelRoute.put('/personnels', middlewareAuth.verifyToken, upload, updatePersonnel)
 personnelRoute.delete('/personnels', middlewareAuth.verifyToken, deletePersonnel)
-personnelRoute.get('/personnel/:id', middlewareAuth.verifyToken, getPersonnel)
+personnelRoute.get('/personnelsEmail/:email', middlewareAuth.verifyToken, getPersonnelEmail)
+personnelRoute.get('/personnels/:id', middlewareAuth.verifyToken, getPersonnel)
 personnelRoute.get('/personnels', middlewareAuth.verifyToken, getListPersonnel)
 
 module.exports = personnelRoute
