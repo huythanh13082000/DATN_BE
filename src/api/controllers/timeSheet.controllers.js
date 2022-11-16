@@ -67,19 +67,29 @@ const updateTimeSheet = async (req, res) => {
     return res.status(403).json(error)
   }
 }
+// const deleteTimeSheet = async (req, res) => {
+//   // start today
+//   const workingDay = req.body.workingDay
+//   const start = moment(workingDay).startOf('day');
+//   // end today
+//   const end = moment(workingDay).endOf('day');
+//   // const _id = req.params.id
+//   try {
+//     const listTimeSheet = await timeSheetModel.find({ workingDay: { $gte: start, $lte: end } })
+//     if (listTimeSheet.length === 0) {
+//       return res.status(200).json({ description: `No data found ${moment(workingDay).format('DD/MM/YYYY')}` })
+//     }
+//     await timeSheetModel.deleteMany({ workingDay: { $gte: start, $lte: end } })
+//     return res.status(200).json({ description: "Delete TimeSheet Succes" })
+//   } catch (error) {
+//     return res.status(403).json(error)
+//   }
+// }
+// }
 const deleteTimeSheet = async (req, res) => {
-  // start today
-  const workingDay = req.body.workingDay
-  const start = moment(workingDay).startOf('day');
-  // end today
-  const end = moment(workingDay).endOf('day');
-  // const _id = req.params.id
+  const ids = req.body.ids
   try {
-    const listTimeSheet = await timeSheetModel.find({ workingDay: { $gte: start, $lte: end } })
-    if (listTimeSheet.length === 0) {
-      return res.status(200).json({ description: `No data found ${moment(workingDay).format('DD/MM/YYYY')}` })
-    }
-    await timeSheetModel.deleteMany({ workingDay: { $gte: start, $lte: end } })
+    await timeSheetModel.deleteMany({ _id: { $in: ids } })
     return res.status(200).json({ description: "Delete TimeSheet Succes" })
   } catch (error) {
     return res.status(403).json(error)
