@@ -3,7 +3,7 @@ const { createTimeSheet, updateTimeSheet, deleteTimeSheet, getTimeSheet, getList
 const middlewareAuth = require('../middleware/auth')
 const timeSheetRoute = express.Router()
 
-timeSheetRoute.post('/timeSheets/many', middlewareAuth.verifyToken, createTimeSheetMany)
+// timeSheetRoute.post('/timeSheets/many', middlewareAuth.verifyToken, createTimeSheetMany)
 timeSheetRoute.post('/timeSheets', middlewareAuth.verifyToken, createTimeSheet)
 timeSheetRoute.put('/timeSheets', middlewareAuth.verifyToken, updateTimeSheet)
 timeSheetRoute.delete('/timeSheets', middlewareAuth.verifyToken, deleteTimeSheet)
