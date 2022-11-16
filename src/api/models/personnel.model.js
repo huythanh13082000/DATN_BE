@@ -7,7 +7,7 @@ const personnelSchema = new mongoose.Schema({
   rank: { type: Schema.Types.ObjectId, ref: 'rank' },
   // contract: { type: Schema.Types.ObjectId, ref: 'contract' },
   // department: { type: Schema.Types.ObjectId, ref: 'department' },
-  email: String,
+  email: { type: String, unique: true },
   phoneNumber: String,
   IDCard: String,
   createdAt: { type: Date, required: true, default: Date.now },
