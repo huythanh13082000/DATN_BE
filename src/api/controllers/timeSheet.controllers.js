@@ -47,7 +47,7 @@ const createTimeSheet = async (req, res) => {
     if (time.includes('PM')) {
       const timeSheets = await timeSheetModel.find({ createdAt: { $gte: mid, $lte: end } })
       if (timeSheets.length > 0) {
-        return res.status(200).json({ description: `Bạn đã chấm công cuối buổi vào lúc ${moment(timeSheets[0].createdAt).format('h:mm:ss')}!` })
+        return res.status(200).json({ description: `Bạn đã chấm công cuối buổi`, time: createdAt })
       }
       else {
         const timeSheet = await timeSheetModel.create(data)
@@ -57,7 +57,7 @@ const createTimeSheet = async (req, res) => {
     else {
       const timeSheets = await timeSheetModel.find({ createdAt: { $gte: start, $lte: mid } })
       if (timeSheets.length > 0) {
-        return res.status(200).json({ description: `Bạn đã chấm công vào lúc ${moment(timeSheets[0].createdAt).format('h:mm:ss')}!` })
+        return res.status(200).json({ description: `Bạn đã chấm công`, time: createdAt })
       }
       else {
         const timeSheet = await timeSheetModel.create(data)
