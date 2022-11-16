@@ -43,9 +43,14 @@ const createTimeSheet = async (req, res) => {
 }
 const getListPersonnelTimeSheet = async (req, res) => {
   try {
-    const listPersonnel = await personnelModel.find({}).populate('rank')
-    console.log(listPersonnel);
-    return res.status(200).json({ data: listPersonnel })
+    const data = req.query
+    console.log(345, data)
+    const start = moment().startOf('day');
+    // end today
+    const end = moment().endOf('day');
+    const timeSheets = await timeSheetModel.find({ createdAt: { $gte: start, $lte: end }, personnel: data.personnel }).populate('personnel')
+    console.log(timeSheets);
+    return res.status(200).json({ data: timeSheets })
   } catch (error) {
     console.log(error)
     return res.status(403).json(error)
