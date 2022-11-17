@@ -1,4 +1,5 @@
 const moment = require("moment/moment")
+const { count } = require("../models/department.model")
 const { populate } = require("../models/personnel.model")
 const personnelModel = require("../models/personnel.model")
 const timeSheetModel = require("../models/timeSheet.model")
@@ -108,4 +109,29 @@ const getListTimeSheet = async (req, res) => {
   }
 }
 
-module.exports = { createTimeSheetMany, updateTimeSheet, deleteTimeSheet, getTimeSheet, getListTimeSheet, getListPersonnelTimeSheet, createTimeSheet }
+const summaryOfWorkingDays = async (req, res) => {
+  try {
+    const day = req.query.day;
+    const start = moment(day).startOf('month');
+    const end = moment(day).endOf('month');
+    console.log(start, end)
+    const listPersonnel = await personnelModel.find({}).populate('rank')
+
+    const listSum = []
+    async function publicity(data) {
+      for (const item of data) {
+        console.log(11111)
+        const list = await timeSheetModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } })
+        console.log(list.length)
+        listSum.push({ name: item.name, email: item.email, count: list.length })
+        console.log(22222)
+      }
+    }
+    await publicity(listPersonnel)
+    console.log(6666, listSum)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+module.exports = { createTimeSheetMany, updateTimeSheet, deleteTimeSheet, getTimeSheet, getListTimeSheet, getListPersonnelTimeSheet, createTimeSheet, summaryOfWorkingDays }
