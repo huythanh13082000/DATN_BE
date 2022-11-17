@@ -43,7 +43,7 @@ const createTimeSheet = async (req, res) => {
     console.log(11113, mid)
     const data = req.body
 
-    const time = moment().format('LT');
+    const time = moment().add({ hours: 7 }).format('LT');
     console.log(time)
     if (time.includes('PM')) {
       const timeSheets = await timeSheetModel.find({ createdAt: { $gte: mid, $lte: end } })
