@@ -163,7 +163,7 @@ const summaryOfWorkingDays = async (req, res) => {
         console.log(11111)
         const list = await timeSheetModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } })
         console.log(list.length)
-        listSum.push({ name: item.name, email: item.email, count: list.length })
+        listSum.push({ name: item.name, email: item.email, count: list.length / 2 })
         console.log(22222)
       }
     }
