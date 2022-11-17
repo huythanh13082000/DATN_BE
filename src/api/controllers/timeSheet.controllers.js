@@ -156,7 +156,6 @@ const summaryOfWorkingDays = async (req, res) => {
     const end = moment(day).endOf('month');
     console.log(start, end)
     const listPersonnel = await personnelModel.find({}).populate('rank')
-
     const listSum = []
     async function publicity(data) {
       for (const item of data) {
