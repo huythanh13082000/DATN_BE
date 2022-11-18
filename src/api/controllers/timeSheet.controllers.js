@@ -35,39 +35,43 @@ const createTimeSheetMany = async (req, res) => {
 
 const createTimeSheet = async (req, res) => {
   try {
-    const start = moment().startOf('day').add({ hours: 7 });
+    const start = moment().startOf('day')
     // end today
-    const end = moment().endOf('day').add({ hours: 7 });
-    const mid = moment().endOf('day').subtract({ hours: 5 })
-    console.log(111, start)
-    console.log(11113, mid)
+    const end = moment().endOf('day')
+    // const mid = moment().endOf('day')
+    // console.log(111, start)
+    // console.log(11113, mid)
     const data = req.body
 
-    const time = moment().add({ hours: 7 }).format('LT');
+    const time = moment().hour();
     console.log(time)
-    if (time.includes('PM')) {
-      const timeSheets = await timeSheetModel.find({ createdAt: { $gte: mid, $lte: end } })
-      // console.log(56788,timeSheets);
-      if (timeSheets.length > 0) {
-        console.log(56788, timeSheets);
-        return res.status(200).json({ description: `Bạn đã chấm công cuối buổi`, time: timeSheets[0].createdAt })
-      }
-      else {
-        console.log(567889, timeSheets);
-        const timeSheet = await timeSheetModel.create(data)
-        return res.status(200).json({ data: timeSheet, description: "Chấm công cuối buổi thành công!" })
-      }
+    // if (time.includes('PM')) {
+    const timeSheets = await timeSheetModel.find({ createdAt: { $gte: start, $lte: end } })
+    // console.log(56788,timeSheets);
+    if (timeSheets.length === 0) {
+      const timeSheet = await timeSheetModel.create(data)
+      return res.status(200).json({ data: timeSheet, description: "Chấm công cuối buổi thành công!" })
+      // return res.status(200).json({ description: `Bạn đã chấm công cuối buổi`, time: timeSheets[0].createdAt })
+    }
+    else if (timeSheets.length === 1) {
+      console.log(567889, timeSheets);
+      const timeSheet = await timeSheetModel.create(data)
+      return res.status(200).json({ data: timeSheet, description: "Chấm công cuối buổi thành công!" })
     }
     else {
-      const timeSheets = await timeSheetModel.find({ createdAt: { $gte: start, $lte: mid } })
-      if (timeSheets.length > 0) {
-        return res.status(200).json({ description: `Bạn đã chấm công`, time: timeSheets[0].createdAt })
-      }
-      else {
-        const timeSheet = await timeSheetModel.create(data)
-        return res.status(200).json({ data: timeSheet, description: "Chấm công thành công!" })
-      }
+      return res.status(200).json({ description: "Đã hoàn thành chấm công!" })
     }
+    // }
+    // else {
+    //   const timeSheets = await timeSheetModel.find({ createdAt: { $gte: start, $lte: mid } })
+    //   if (timeSheets.length > 0) {
+    //     return res.status(200).json({ description: `Bạn đã chấm công`, time: timeSheets[0].createdAt })
+    //   }
+    //   else {
+    //     const timeSheet = await timeSheetModel.create(data)
+    //     return res.status(200).json({ data: timeSheet, description: "Chấm công thành công!" })
+    //   }
+    // }
 
     // const timeSheet = await timeSheetModel.create(data)
     // return res.status(200).json({ data: timeSheet, description: "Create TimeSheet Success" })
