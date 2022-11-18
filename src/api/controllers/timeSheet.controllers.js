@@ -55,7 +55,7 @@ const createTimeSheet = async (req, res) => {
     else if (timeSheets.length === 1) {
       console.log(567889, timeSheets);
       const timeSheet = await timeSheetModel.create(data)
-      return res.status(200).json({ data: timeSheet, description: "Chấm công cuối buổi thành công!" })
+      return res.status(200).json({ data: timeSheet, description: "Chấm công thành công!" })
     }
     else {
       return res.status(200).json({ description: "Đã hoàn thành chấm công!" })
