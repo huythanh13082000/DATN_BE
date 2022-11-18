@@ -34,10 +34,10 @@ const createUser = async (req, res) => {
       const hash = await bcrypt.hash(passWord, saft)
       console.log(788889, hash);
       await userModel.create({ passWord: hash, email: email })
-      return res.status(200).json('success')
+      return res.status(200).json({ description: 'Tạo tài khoản thành công!' })
     }
     else {
-      return res.status(403).json({ description: 'email đã được sử dụng' })
+      return res.status(403).json({ description: 'email đã được sử dụng!' })
     }
   } catch (error) {
     return res.status(403).json(error)
