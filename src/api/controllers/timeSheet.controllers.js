@@ -42,7 +42,8 @@ const createTimeSheet = async (req, res) => {
     // console.log(111, start)
     // console.log(11113, mid)
     const data = req.body
-    console.log(1111324, req.query.personnel);
+    console.log(11113245, req);
+    console.log(1111324, req.params.personnel);
     const time = moment().hour();
     console.log(time)
     // if (time.includes('PM')) {
