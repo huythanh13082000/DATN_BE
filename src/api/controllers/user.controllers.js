@@ -21,9 +21,10 @@ const getListUser = async (req, res) => {
 }
 
 const createUser = async (req, res) => {
-  const { passWord, email } = req.body
+
   try {
-    console.log('678987', email);
+    const { passWord, email } = req.body
+    console.log(5555, email);
     const user = await userModel.findOne({ email })
     console.log(4444, user);
     if (!user) {
