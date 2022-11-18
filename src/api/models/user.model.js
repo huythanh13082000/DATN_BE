@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema({
   roleId: String,
   email: { type: String, unique: true },
   refreshToken: String,
-  createdAt: { type: Date, required: true, default: Date.now() },
+  createdAt: { type: Date, required: true, default: Date.now },
   updatedAt: { type: Date }
 })
 
