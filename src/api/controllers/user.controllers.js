@@ -31,7 +31,7 @@ const createUser = async (req, res) => {
       return res.status(200).json('success')
     }
     else {
-      return res.status(403).json('email đã được xử dụng')
+      return res.status(403).json({ description: 'email đã được xử dụng' })
     }
   } catch (error) {
     return res.status(403).json(error)
