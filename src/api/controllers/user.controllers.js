@@ -23,6 +23,7 @@ const getListUser = async (req, res) => {
 const createUser = async (req, res) => {
   const { passWord, email } = req.body
   try {
+    console.log('678987', email);
     const user = userModel.findOne({ email })
     console.log(4444, user);
     if (!user) {

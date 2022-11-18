@@ -20,7 +20,7 @@ var storage = multer.diskStorage({
 const upload = multer({ storage: storage }).single('avatar')
 const userRoute = route;
 
-userRoute.post('/auth/users', upload, createUser)
+userRoute.post('/auth/users', middlewareAuth.verifyToken, createUser)
 
 userRoute.get('/auth/users/detail', middlewareAuth.verifyToken, defaultUser)
 
