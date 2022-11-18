@@ -49,12 +49,12 @@ const createTimeSheet = async (req, res) => {
     const timeSheets = await timeSheetModel.find({ createdAt: { $gte: start, $lte: end }, personnel: req.query.personnel })
     console.log(56788, timeSheets);
     if (timeSheets.length === 0) {
-      const timeSheet = await timeSheetModel.create(data)
+      const timeSheet = await timeSheetModel.create({ ...data, personnel: req.query.personnel })
       return res.status(200).json({ data: timeSheet, description: "Chấm công thành công!" })
     }
     else if (timeSheets.length === 1) {
       console.log(567889, timeSheets);
-      const timeSheet = await timeSheetModel.create(data)
+      const timeSheet = await timeSheetModel.create({ ...data, personnel: req.query.personnel })
       return res.status(200).json({ data: timeSheet, description: "Chấm công thành công!" })
     }
     else {
