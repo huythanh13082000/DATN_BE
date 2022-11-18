@@ -22,22 +22,22 @@ const getListUser = async (req, res) => {
 
 const createUser = async (req, res) => {
   try {
-    const { passWord, email } = req.body
+    const data = req.body
     console.log(5555, email);
-    const user = await userModel.findOne({ email })
-    console.log(4444, user);
-    if (!user) {
-      console.log(4444445, user);
-      const saft = await bcrypt.genSalt(10)
-      console.log(78888, saft);
-      const hash = await bcrypt.hash(passWord, saft)
-      console.log(788889, hash);
-      await userModel.create({ passWord: hash, email: email })
-      return res.status(200).json({ description: 'Tạo tài khoản thành công!' })
-    }
-    else {
-      return res.status(403).json({ description: 'Email đã được sử dụng!' })
-    }
+    // const user = await userModel.findOne({ email: data.email })
+    // console.log(4444, user);
+    // if (!user) {
+    console.log(4444445, user);
+    const saft = await bcrypt.genSalt(10)
+    console.log(78888, saft);
+    const hash = await bcrypt.hash(data.passWord, saft)
+    console.log(788889, hash);
+    await userModel.create({ passWord: hash, email: data.email })
+    return res.status(200).json({ description: 'Tạo tài khoản thành công!' })
+    // }
+    // else {
+    //   return res.status(403).json({ description: 'Email đã được sử dụng!' })
+    // }
   } catch (error) {
     return res.status(403).json(error)
   }
