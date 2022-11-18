@@ -54,9 +54,9 @@ const defaultUser = async (req, res) => {
 
 }
 const deleteUser = async (req, res) => {
-  const id = req.query.id
   try {
-    await userModel.findOneAndDelete({ _id: id })
+    const ids = req.body.ids
+    await userModel.findOneAndDelete({ _id: { $in: ids } })
     return res.json('delete success')
   } catch (error) {
     return res.json('id not valid')
