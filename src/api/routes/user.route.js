@@ -20,16 +20,16 @@ var storage = multer.diskStorage({
 const upload = multer({ storage: storage }).single('avatar')
 const userRoute = route;
 
-userRoute.post('/auth/signup', upload, createUser)
+userRoute.post('/auth/users', upload, createUser)
 
-userRoute.get('/auth/profile', middlewareAuth.verifyToken, defaultUser)
+userRoute.get('/auth/users', middlewareAuth.verifyToken, defaultUser)
 
 userRoute.post('/auth/signin', login)
 
-userRoute.delete('/user/delete', middlewareAuth.verifyToken, deleteUser)
-userRoute.get('/user', middlewareAuth.verifyToken, getListUser)
-userRoute.put('/user/update', middlewareAuth.verifyToken, updateUser)
+userRoute.delete('/auth/users', middlewareAuth.verifyToken, deleteUser)
+userRoute.get('/auth/users', middlewareAuth.verifyToken, getListUser)
+userRoute.put('/auth/users', middlewareAuth.verifyToken, updateUser)
 userRoute.post('/auth/refreshtoken', refreshToken)
-userRoute.put('/user/changePassWord', middlewareAuth.verifyToken, changePassword)
+userRoute.put('/auth/users/changePassWord', middlewareAuth.verifyToken, changePassword)
 
 module.exports = userRoute
