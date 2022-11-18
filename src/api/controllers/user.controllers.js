@@ -21,7 +21,6 @@ const getListUser = async (req, res) => {
 }
 
 const createUser = async (req, res) => {
-
   try {
     const { passWord, email } = req.body
     console.log(5555, email);
@@ -37,7 +36,7 @@ const createUser = async (req, res) => {
       return res.status(200).json({ description: 'Tạo tài khoản thành công!' })
     }
     else {
-      return res.status(403).json({ description: 'email đã được sử dụng!' })
+      return res.status(403).json({ description: 'Email đã được sử dụng!' })
     }
   } catch (error) {
     return res.status(403).json(error)
