@@ -81,10 +81,10 @@ const login = async (req, res) => {
 
 }
 const updateUser = async (req, res) => {
-  const data = req.body
   try {
-    await userModel.findOneAndUpdate({ _id: req.user._id }, { ...data })
-    res.status(200).json('update success')
+    const data = req.body
+    await userModel.findOneAndUpdate({ _id: data._id }, { ...data })
+    res.status(200).json({ description: 'update user success' })
   } catch (error) {
     res.status(404).json(error)
   }
