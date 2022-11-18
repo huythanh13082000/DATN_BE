@@ -22,7 +22,7 @@ const userRoute = route;
 
 userRoute.post('/auth/users', upload, createUser)
 
-userRoute.get('/auth/users', middlewareAuth.verifyToken, defaultUser)
+userRoute.get('/auth/users/detail', middlewareAuth.verifyToken, defaultUser)
 
 userRoute.post('/auth/signin', login)
 
