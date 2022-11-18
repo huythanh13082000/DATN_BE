@@ -46,7 +46,7 @@ const createTimeSheet = async (req, res) => {
     const time = moment().hour();
     console.log(time)
     // if (time.includes('PM')) {
-    const timeSheets = await timeSheetModel.find({ createdAt: { $gte: start, $lte: end }, personnel: data._id })
+    const timeSheets = await timeSheetModel.find({ createdAt: { $gte: start, $lte: end }, personnel: req.query.personnel })
     console.log(56788, timeSheets);
     if (timeSheets.length === 0) {
       const timeSheet = await timeSheetModel.create(data)
