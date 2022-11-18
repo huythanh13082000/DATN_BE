@@ -57,9 +57,9 @@ const deleteUser = async (req, res) => {
   try {
     const ids = req.body.ids
     await userModel.findOneAndDelete({ _id: { $in: ids } })
-    return res.json('delete success')
+    return res.json({ description: 'Xóa tài khoản thành công!' })
   } catch (error) {
-    return res.json('id not valid')
+    return res.json(error)
   }
 }
 
