@@ -21,15 +21,18 @@ const getListUser = async (req, res) => {
 }
 
 const createUser = async (req, res) => {
-  console.log(req.filename);
   const { passWord, email } = req.body
-  const saft = await bcrypt.genSalt(10)
-  const hash = await bcrypt.hash(passWord, saft)
-  console.log(req.body)
   try {
-    await userModel.create({ passWord: hash, email: email, avatar: req.filename })
-    console.log(123)
-    return res.status(200).json('success')
+    const user = userModel.findOne({ email })
+    if (!user) {
+      const saft = await bcrypt.genSalt(10)
+      const hash = await bcrypt.hash(passWord, saft)
+      await userModel.create({ passWord: hash, email: email })
+      return res.status(200).json('success')
+    }
+    else {
+      return res.status(403).json('email đã được xử dụng')
+    }
   } catch (error) {
     return res.status(403).json(error)
   }
