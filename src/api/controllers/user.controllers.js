@@ -23,11 +23,11 @@ const getListUser = async (req, res) => {
 const createUser = async (req, res) => {
   try {
     const data = req.body
-    console.log(5555, email);
+    // console.log(5555, email);
     // const user = await userModel.findOne({ email: data.email })
     // console.log(4444, user);
     // if (!user) {
-    console.log(4444445, user);
+    // console.log(4444445, user);
     const saft = await bcrypt.genSalt(10)
     console.log(78888, saft);
     const hash = await bcrypt.hash(data.passWord, saft)
@@ -39,6 +39,7 @@ const createUser = async (req, res) => {
     //   return res.status(403).json({ description: 'Email đã được sử dụng!' })
     // }
   } catch (error) {
+    console.log(6666, error);
     return res.status(403).json(error)
   }
 }
