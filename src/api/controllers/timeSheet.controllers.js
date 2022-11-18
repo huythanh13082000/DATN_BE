@@ -35,10 +35,10 @@ const createTimeSheetMany = async (req, res) => {
 
 const createTimeSheet = async (req, res) => {
   try {
-    const start = moment().startOf('day');
+    const start = moment().startOf('day').add({ hours: 7 });
     // end today
-    const end = moment().endOf('day');
-    const mid = moment().endOf('day').subtract({ hours: 12 })
+    const end = moment().endOf('day').add({ hours: 7 });
+    const mid = moment().endOf('day').subtract({ hours: 5 })
     console.log(111, start)
     console.log(11113, mid)
     const data = req.body
