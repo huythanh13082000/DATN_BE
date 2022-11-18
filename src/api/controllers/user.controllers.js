@@ -24,6 +24,7 @@ const createUser = async (req, res) => {
   const { passWord, email } = req.body
   try {
     const user = userModel.findOne({ email })
+    console.log(4444, user);
     if (!user) {
       const saft = await bcrypt.genSalt(10)
       const hash = await bcrypt.hash(passWord, saft)
