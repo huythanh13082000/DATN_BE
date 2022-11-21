@@ -4,10 +4,11 @@ const middlewareAuth = require('../middleware/auth')
 
 const personnelAllowanceRoute = express.Router()
 
-personnelAllowanceRoute.post('/personnelAllowance', middlewareAuth.verifyToken, createPersonnelAllowance)
-personnelAllowanceRoute.put('/personnelAllowance/:id', middlewareAuth.verifyToken, updatePersonnelAllowance)
-personnelAllowanceRoute.delete('/personnelAllowance/:id', middlewareAuth.verifyToken, deletePersonnelAllowance)
-personnelAllowanceRoute.get('/personnelAllowance/:id', middlewareAuth.verifyToken, getPersonnelAllowance)
-personnelAllowanceRoute.get('/personnelAllowance', middlewareAuth.verifyToken, getListPersonnelAllowance)
+personnelAllowanceRoute.post('/personnelAllowances', middlewareAuth.verifyToken, createPersonnelAllowance)
+personnelAllowanceRoute.put('/personnelAllowances', middlewareAuth.verifyToken, updatePersonnelAllowance)
+personnelAllowanceRoute.delete('/personnelAllowances', middlewareAuth.verifyToken, deletePersonnelAllowance)
+personnelAllowanceRoute.get('/personnelAllowances', middlewareAuth.verifyToken, getListPersonnelAllowance)
+personnelAllowanceRoute.get('/personnelAllowances/:id', middlewareAuth.verifyToken, getPersonnelAllowance)
+
 
 module.exports = personnelAllowanceRoute

@@ -12,10 +12,10 @@ const createPersonnelAllowance = async (req, res) => {
 
 const updatePersonnelAllowance = async (req, res) => {
   const data = req.body
-  const _id = req.params.id
+  // const _id = req.params.id
   try {
-    await personnelAllowanceModel.findByIdAndUpdate({ _id }, { ...data, updateAt: Date.now() })
-    const personnelAllowance = await personnelAllowanceModel.findOne({ _id })
+    await personnelAllowanceModel.findByIdAndUpdate({ _id: data._id }, { ...data, updateAt: Date.now() })
+    const personnelAllowance = await personnelAllowanceModel.findOne({ _id: data._id })
     return res.status(200).json({ data: personnelAllowance, description: "Update PersonnelAllowance Success" })
   } catch (error) {
     return res.status(403).json(error)
@@ -23,9 +23,9 @@ const updatePersonnelAllowance = async (req, res) => {
 }
 
 const deletePersonnelAllowance = async (req, res) => {
-  const _id = req.params.id
+  const ids = req.body.ids
   try {
-    await personnelAllowanceModel.findByIdAndDelete({ _id })
+    await personnelAllowanceModel.findByIdAndDelete({ _id: { $in: ids } })
     return res.status(200).json({ description: 'Delete PersonnelAllowance Success' })
   } catch (error) {
     return res.status(403).json(error)

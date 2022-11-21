@@ -11,10 +11,9 @@ const createPersonnelFine = async (req, res) => {
 }
 const updatePersonnelFine = async (req, res) => {
   const data = req.body
-  const _id = req.params.id
   try {
-    await personnelFineModel.findByIdAndUpdate({ _id }, { ...data, updatedAt: Date.now() })
-    const personnelFine = personnelFineModel.findOne({ _id })
+    await personnelFineModel.findByIdAndUpdate({ _id: data._id }, { ...data, updatedAt: Date.now() })
+    const personnelFine = personnelFineModel.findOne({ _id: data._id })
     return res.status(200).json({ data: personnelFine, description: "update PersonnelFine Success" })
   } catch (error) {
     return res.status(403).json(error)
@@ -22,9 +21,9 @@ const updatePersonnelFine = async (req, res) => {
 }
 
 const deletePersonnelFine = async (req, res) => {
-  const _id = req.params.id
+  const ids = req.body.ids
   try {
-    await personnelFineModel.findByIdAndDelete({ _id })
+    await personnelFineModel.findByIdAndDelete({ _id: { $in: ids } })
     return res.status(200).json({ description: "Delete PersonnelFine Success" })
   } catch (error) {
     return res.status(403).json(error)
