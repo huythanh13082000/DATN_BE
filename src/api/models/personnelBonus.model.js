@@ -4,6 +4,7 @@ const { Schema } = mongoose
 const personnelBonusSchema = new mongoose.Schema({
   personnel: { type: Schema.Types.ObjectId, ref: 'personnel' },
   bonus: { type: Schema.Types.ObjectId, ref: 'bonus' },
+  dateBonus: { type: Date },
   createdAt: { type: Date, required: true, default: Date.now() },
   updatedAt: { type: Date },
 })
