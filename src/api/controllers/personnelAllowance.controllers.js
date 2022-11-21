@@ -12,7 +12,6 @@ const createPersonnelAllowance = async (req, res) => {
 
 const updatePersonnelAllowance = async (req, res) => {
   const data = req.body
-  // const _id = req.params.id
   try {
     await personnelAllowanceModel.findByIdAndUpdate({ _id: data._id }, { ...data, updateAt: Date.now() })
     const personnelAllowance = await personnelAllowanceModel.findOne({ _id: data._id })
