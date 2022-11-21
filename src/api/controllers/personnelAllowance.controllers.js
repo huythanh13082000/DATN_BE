@@ -24,7 +24,7 @@ const updatePersonnelAllowance = async (req, res) => {
 const deletePersonnelAllowance = async (req, res) => {
   const ids = req.body.ids
   try {
-    await personnelAllowanceModel.findByIdAndDelete({ _id: { $in: ids } })
+    await personnelAllowanceModel.deleteMany({ _id: { $in: ids } })
     return res.status(200).json({ description: 'Delete PersonnelAllowance Success' })
   } catch (error) {
     return res.status(403).json(error)

@@ -24,7 +24,7 @@ const updatePersonnelBonus = async (req, res) => {
 const deletePersonnelBonus = async (req, res) => {
   try {
     const ids = req.body.ids
-    await personnelBonusModel.findByIdAndDelete({ _id: { $in: ids } })
+    await personnelBonusModel.deleteMany({ _id: { $in: ids } })
     return res.status(200).json({ description: 'Delete PersonnelBonus Success' })
   } catch (error) {
     return res.status(403).json(error)

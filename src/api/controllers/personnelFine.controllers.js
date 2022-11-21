@@ -23,7 +23,7 @@ const updatePersonnelFine = async (req, res) => {
 const deletePersonnelFine = async (req, res) => {
   const ids = req.body.ids
   try {
-    await personnelFineModel.findByIdAndDelete({ _id: { $in: ids } })
+    await personnelFineModel.deleteMany({ _id: { $in: ids } })
     return res.status(200).json({ description: "Delete PersonnelFine Success" })
   } catch (error) {
     return res.status(403).json(error)
