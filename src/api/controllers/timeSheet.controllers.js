@@ -2,6 +2,8 @@ const moment = require("moment/moment")
 const { count } = require("../models/department.model")
 const { populate } = require("../models/personnel.model")
 const personnelModel = require("../models/personnel.model")
+const personnelBonusModel = require("../models/personnelBonus.model")
+const personnelFineModel = require("../models/personnelFine.model")
 const timeSheetModel = require("../models/timeSheet.model")
 
 
@@ -181,4 +183,39 @@ const summaryOfWorkingDays = async (req, res) => {
   }
 }
 
-module.exports = { createTimeSheetMany, updateTimeSheet, deleteTimeSheet, getTimeSheet, getListTimeSheet, getListPersonnelTimeSheet, createTimeSheet, summaryOfWorkingDays }
+const summaryOfSalary = async (req, res) => {
+  try {
+    const day = req.query.day;
+    const sumWorkingDay = 24
+    const start = moment(day).startOf('month');
+    const end = moment(day).endOf('month');
+    console.log(start, end)
+    const listPersonnel = await personnelModel.find({}).populate('rank')
+    const listSum = []
+    async function publicity(data) {
+      for (const item of data) {
+        console.log(11111)
+        const list = await timeSheetModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } })
+        const fines = await personnelFineModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } }).populate('fine')
+        const bonus = await personnelBonusModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } }).populate('bonus')
+        listFine = fines.map((item) => {
+          return item.fine
+        })
+        listBonus = bonus.map((item) => {
+          return item.bonus
+        })
+        console.log(567, bonus);
+        console.log(list.length)
+        listSum.push({ name: item.name, email: item.email, count: list.length / 2, listFine, listBonus })
+        console.log(22222)
+      }
+    }
+    await publicity(listPersonnel)
+    console.log(6666, listSum)
+    return res.status(200).json({ list: listSum, description: 'Fetching List TimeSheet Succes' })
+  } catch (error) {
+    return res.status(403).json(error)
+  }
+}
+
+module.exports = { createTimeSheetMany, updateTimeSheet, deleteTimeSheet, getTimeSheet, getListTimeSheet, getListPersonnelTimeSheet, createTimeSheet, summaryOfWorkingDays, summaryOfSalary }
