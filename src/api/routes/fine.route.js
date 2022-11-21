@@ -6,7 +6,8 @@ const fineRoute = express.Router()
 fineRoute.post('/fines', middlewareAuth.verifyToken, createFine)
 fineRoute.put('/fines', middlewareAuth.verifyToken, updateFine)
 fineRoute.delete('/fines', middlewareAuth.verifyToken, deleteFine)
-fineRoute.get('/fines/:id', middlewareAuth.verifyToken, getFine)
 fineRoute.get('/fines', middlewareAuth.verifyToken, getListFine)
+fineRoute.get('/fines/:id', middlewareAuth.verifyToken, getFine)
+
 
 module.exports = fineRoute
