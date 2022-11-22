@@ -195,6 +195,8 @@ const summaryOfSalary = async (req, res) => {
     async function publicity(data) {
       for (const item of data) {
         console.log(11111)
+        let sumBonus = 0
+        let sumFine = 0
         const list = await timeSheetModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } })
         const fines = await personnelFineModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } }).populate('fine')
         const bonus = await personnelBonusModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } }).populate('bonus')
@@ -204,9 +206,13 @@ const summaryOfSalary = async (req, res) => {
         listBonus = bonus.map((item) => {
           return item.bonus
         })
-        console.log(567, bonus);
-        console.log(list.length)
-        listSum.push({ name: item.name, email: item.email, count: list.length / 2, listFine, listBonus })
+        listFine.forEach(element => {
+          sumFine = + Number(element.value)
+        });
+        listBonus.forEach(element => {
+          sumBonus = + Number(element.value)
+        });
+        listSum.push({ name: item.name, email: item.email, count: list.length / 2, listFine: [...listFine], listBonus: [...listBonus] })
         console.log(22222)
       }
     }
