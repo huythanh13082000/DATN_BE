@@ -186,7 +186,8 @@ const summaryOfWorkingDays = async (req, res) => {
 const summaryOfSalary = async (req, res) => {
   try {
     const day = req.query.day;
-    const sumWorkingDay = 24
+    const sumWorkingDay = req.query.sumWorkingDay
+    console.log(7777, sumWorkingDay);
     const start = moment(day).startOf('month');
     const end = moment(day).endOf('month');
     console.log(start, end)
@@ -194,10 +195,13 @@ const summaryOfSalary = async (req, res) => {
     const listSum = []
     async function publicity(data) {
       for (const item of data) {
+
+        let sum = 0
         console.log(11111)
         let sumBonus = 0
         let sumFine = 0
         const list = await timeSheetModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } })
+
         const fines = await personnelFineModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } }).populate('fine')
         const bonus = await personnelBonusModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } }).populate('bonus')
         listFine = fines.map((item) => {
@@ -212,7 +216,8 @@ const summaryOfSalary = async (req, res) => {
         listBonus.forEach(element => {
           sumBonus = + Number(element.value)
         });
-        listSum.push({ name: item.name, email: item.email, count: list.length / 2, listFine: [...listFine], listBonus: [...listBonus] })
+        sum = item.rank.value / sumWorkingDay * list.length / 2 + sumBonus - sumFine
+        listSum.push({ name: item.name, email: item.email, count: list.length / 2, listFine: [...listFine], listBonus: [...listBonus], salary: sum.toFixed() })
         console.log(22222)
       }
     }
