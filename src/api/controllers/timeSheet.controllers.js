@@ -189,8 +189,10 @@ const summaryOfSalary = async (req, res) => {
     const day = req.query.day;
     const sumWorkingDay = req.query.sumWorkingDay
     console.log(7777, sumWorkingDay);
-    const start = moment(day).weekday();
-    const end = (moment(day).daysInMonth() / 7).toFixed();
+    const start = moment(day).startOf('month');
+    const end = moment(day).endOf('month');
+    // const start = moment(day).weekday();
+    // const end = (moment(day).daysInMonth() / 7).toFixed();
     console.log(start, end)
     const listPersonnel = await personnelModel.find({}).populate('rank')
     const listSum = []
