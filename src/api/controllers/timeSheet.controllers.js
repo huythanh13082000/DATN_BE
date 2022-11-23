@@ -1,4 +1,5 @@
 const moment = require("moment/moment")
+const allowanceModel = require("../models/allowance.model")
 const { count } = require("../models/department.model")
 const { populate } = require("../models/personnel.model")
 const personnelModel = require("../models/personnel.model")
@@ -200,10 +201,15 @@ const summaryOfSalary = async (req, res) => {
         console.log(11111)
         let sumBonus = 0
         let sumFine = 0
+        let sumAllowance = 0
         const list = await timeSheetModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } })
-
+        const allowances = await allowanceModel.find()
+        console.log('123123', allowances);
         const fines = await personnelFineModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } }).populate('fine')
         const bonus = await personnelBonusModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } }).populate('bonus')
+        allowances.forEach((item) => {
+          sumAllowance = + Number(item.value)
+        })
         listFine = fines.map((item) => {
           return item.fine
         })
@@ -216,7 +222,10 @@ const summaryOfSalary = async (req, res) => {
         listBonus.forEach(element => {
           sumBonus = + Number(element.value)
         });
-        sum = item.rank.value / sumWorkingDay * list.length / 2 + sumBonus - sumFine
+        if (list.length / 2 < 10) {
+          sumAllowance = 0
+        }
+        sum = item.rank.value / sumWorkingDay * list.length / 2 + sumBonus - sumFine + sumAllowance
         listSum.push({ name: item.name, email: item.email, count: list.length / 2, listFine: [...listFine], listBonus: [...listBonus], salary: sum.toFixed() })
         console.log(22222)
       }
