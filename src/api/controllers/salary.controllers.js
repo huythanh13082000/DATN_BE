@@ -15,7 +15,7 @@ const getSalary = async (req, res) => {
     console.log(start)
     const end = moment().endOf('month');
     console.log(start, end)
-    const data = await salaryModel.find({ time: { $gte: start, $lte: end } })
+    const data = await salaryModel.findOne({ time: { $gte: start, $lte: end } })
     return res.status(200).json({ data, description: 'Fetching Salary Success' })
   } catch (error) {
     return res.status(403).json(error)
