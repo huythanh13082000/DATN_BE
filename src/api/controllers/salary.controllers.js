@@ -1,4 +1,5 @@
-const salaryModel = require("../models/salary.model");
+const salaryModel = require("../models/salary.model");4
+const moment = require("moment/moment")
 
 const createSalary = async (req, res) => {
   const data = req.body
@@ -8,9 +9,12 @@ const createSalary = async (req, res) => {
   await salaryModel.create({ ...data })
 }
 const getSalary = async (req, res) => {
+  console.log(111)
   try {
     const start = moment().startOf('month');
+    console.log(start)
     const end = moment().endOf('month');
+    console.log(start, end)
     const data = await salaryModel.find({ time: { $gte: start, $lte: end } })
     return res.status(200).json({ data, description: 'Fetching Salary Success' })
   } catch (error) {
