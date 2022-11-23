@@ -11,12 +11,12 @@ const getSalary = async (req, res) => {
   try {
     const start = moment().startOf('month');
     const end = moment().endOf('month');
-    const data = await salaryModel.findOne({ time: { $gte: start, $lte: end } })
+    const data = await salaryModel.find({ time: { $gte: start, $lte: end } })
     return res.status(200).json({ data, description: 'Fetching Salary Success' })
   } catch (error) {
     return res.status(403).json(error)
   }
 }
 
-module.exports = { createSalary,getSalary }
+module.exports = { createSalary, getSalary }
 
