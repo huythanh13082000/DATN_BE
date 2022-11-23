@@ -5,6 +5,7 @@ const { populate } = require("../models/personnel.model")
 const personnelModel = require("../models/personnel.model")
 const personnelBonusModel = require("../models/personnelBonus.model")
 const personnelFineModel = require("../models/personnelFine.model")
+const salaryModel = require("../models/salary.model")
 const timeSheetModel = require("../models/timeSheet.model")
 
 
@@ -232,8 +233,9 @@ const summaryOfSalary = async (req, res) => {
       }
     }
     await publicity(listPersonnel)
+    await salaryModel.create({ data: listSum, time: day })
     console.log(6666, listSum)
-    return res.status(200).json({ list: listSum, description: 'Fetching List TimeSheet Succes' })
+    return res.status(200).json({ list: listSum, description: 'Fetching List Salary And Save Success' })
   } catch (error) {
     return res.status(403).json(error)
   }
