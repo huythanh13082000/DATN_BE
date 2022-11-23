@@ -233,6 +233,7 @@ const summaryOfSalary = async (req, res) => {
       }
     }
     await publicity(listPersonnel)
+    await salaryModel.findOneAndDelete({ time: { $gte: start, $lte: end } })
     await salaryModel.create({ data: listSum, time: day })
     console.log(6666, listSum)
     return res.status(200).json({ list: listSum, description: 'Fetching List Salary And Save Success' })
