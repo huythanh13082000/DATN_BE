@@ -47,7 +47,8 @@ const defaultUser = async (req, res) => {
   const idParams = req.user
   try {
     const defaultUser = await userModel.findOne({ _id: idParams })
-    return res.json({ email: defaultUser.email, avatar: defaultUser.avatar })
+    const personnel = await personnel.find({ email: defaultUser.email }).populate('rank')
+    return res.json({ email: defaultUser.email, avatar: personnel.avatar, name: personnel.name, role: personnel.role, rank: personnel.rank.name })
   } catch (error) {
     return res.status(403).json(error)
   }
