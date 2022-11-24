@@ -32,7 +32,7 @@ const createUser = async (req, res) => {
     console.log(78888, saft);
     const hash = await bcrypt.hash(data.passWord, saft)
     console.log(788889, hash);
-    await userModel.create({ passWord: hash, email: data.email })
+    await userModel.create({ passWord: hash, email: data.email, role: data.role })
     return res.status(200).json({ description: 'Tạo tài khoản thành công!' })
     // }
     // else {
