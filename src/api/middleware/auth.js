@@ -1,4 +1,5 @@
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const userModel = require('../models/user.model');
 
 const middlewareAuth = {
   verifyToken: (req, res, next) => {
@@ -6,12 +7,14 @@ const middlewareAuth = {
     console.log(111, token);
     if (token) {
       const accessToken = token.split(" ")[1]
-      jwt.verify(accessToken, process.env.TOKEN_SECRET, (err, user) => {
+      jwt.verify(accessToken, process.env.TOKEN_SECRET, async (err, id) => {
         if (err) {
           console.log(err)
           return res.status(401).json("Token not valid")
         }
+        const user = await userModel.findOne({ _id: id })
         req.user = user
+
         console.log(444, user)
         next()
       })
