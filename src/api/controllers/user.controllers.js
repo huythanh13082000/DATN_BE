@@ -2,6 +2,7 @@ const userModel = require("../models/user.model")
 const jwt = require("jsonwebtoken")
 const bcrypt = require('bcrypt');
 const { generateToken } = require("../helper/generateToken");
+const personnelModel = require("../models/personnel.model");
 
 
 const getListUser = async (req, res) => {
@@ -47,7 +48,7 @@ const defaultUser = async (req, res) => {
   const idParams = req.user
   try {
     const defaultUser = await userModel.findOne({ _id: idParams })
-    const personnel = await personnel.find({ email: defaultUser.email }).populate('rank')
+    const personnel = await personnelModel.findOne({ email: defaultUser.email }).populate('rank')
     return res.json({ email: defaultUser.email, avatar: personnel.avatar, name: personnel.name, role: personnel.role, rank: personnel.rank.name })
   } catch (error) {
     return res.status(403).json(error)
