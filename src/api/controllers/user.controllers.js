@@ -49,7 +49,10 @@ const defaultUser = async (req, res) => {
   try {
     const defaultUser = await userModel.findOne({ _id: idParams })
     const personnel = await personnelModel.findOne({ email: defaultUser.email }).populate('rank')
-    return res.json({ email: defaultUser.email, avatar: personnel.avatar, name: personnel.name, role: personnel.role, rank: personnel.rank.name })
+    if (personnel)
+      return res.json({ email: defaultUser.email, avatar: personnel.avatar, name: personnel.name, role: defaultUser.role, rank: personnel.rank.name })
+    else
+      return res.json({ email: defaultUser.email, role: defaultUser.role })
   } catch (error) {
     return res.status(403).json(error)
   }
