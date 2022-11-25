@@ -212,7 +212,7 @@ const exportExcelTimeSheet = async (req, res) => {
       "count",
     ];
     const csv = exportExcel(fields, listSum)
-    return res.attachment(`Bang_Cong_Thang_${moment(day).format('MM')}.csv`).send(csv)
+    return res.attachment(`Bang_Cong_Thang_${moment(day).format('MM')}.xlsx`).send(csv)
   } catch (error) {
     return res.status(403).json(error)
   }
