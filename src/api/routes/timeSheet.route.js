@@ -1,5 +1,5 @@
 const express = require('express')
-const { createTimeSheet, updateTimeSheet, deleteTimeSheet, getTimeSheet, getListTimeSheet, getListPersonnelTimeSheet, createTimeSheetMany, summaryOfWorkingDays, summaryOfSalary, exportExcelTimeSheet } = require('../controllers/timeSheet.controllers')
+const { createTimeSheet, updateTimeSheet, deleteTimeSheet, getTimeSheet, getListTimeSheet, getListPersonnelTimeSheet, createTimeSheetMany, summaryOfWorkingDays, summaryOfSalary, exportExcelTimeSheet, exportExcelSummaryOfSalary } = require('../controllers/timeSheet.controllers')
 const middlewareAuth = require('../middleware/auth')
 const timeSheetRoute = express.Router()
 
@@ -10,6 +10,7 @@ timeSheetRoute.delete('/timeSheets', middlewareAuth.verifyToken, deleteTimeSheet
 timeSheetRoute.get('/timeSheets/summaryOfWorkingDays', middlewareAuth.verifyToken, summaryOfWorkingDays)
 timeSheetRoute.get('/timeSheets/summaryOfSalary', middlewareAuth.verifyToken, summaryOfSalary)
 timeSheetRoute.get('/timeSheets/summaryOfWorkingDays/export-excel', middlewareAuth.verifyToken, exportExcelTimeSheet)
+timeSheetRoute.get('/timeSheets/summaryOfSalary/export-excel', middlewareAuth.verifyToken, exportExcelSummaryOfSalary)
 timeSheetRoute.get('/timeSheets/personnels', middlewareAuth.verifyToken, getListPersonnelTimeSheet)
 timeSheetRoute.get('/timeSheets/:id', middlewareAuth.verifyToken, getTimeSheet)
 timeSheetRoute.get('/timeSheets', middlewareAuth.verifyToken, getListTimeSheet)

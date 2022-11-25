@@ -272,4 +272,63 @@ const summaryOfSalary = async (req, res) => {
   }
 }
 
-module.exports = { createTimeSheetMany, updateTimeSheet, deleteTimeSheet, getTimeSheet, getListTimeSheet, getListPersonnelTimeSheet, createTimeSheet, summaryOfWorkingDays, summaryOfSalary, exportExcelTimeSheet }
+const exportExcelSummaryOfSalary = async (req, res) => {
+  try {
+    const day = req.query.day;
+    const sumWorkingDay = req.query.sumWorkingDay
+    console.log(7777, sumWorkingDay);
+    const start = moment(day).startOf('month');
+    const end = moment(day).endOf('month');
+    console.log(start, end)
+    const listPersonnel = await personnelModel.find({}).populate('rank')
+    const listSum = []
+    async function publicity(data) {
+      for (const item of data) {
+        let sum = 0
+        console.log(11111)
+        let sumBonus = 0
+        let sumFine = 0
+        let sumAllowance = 0
+        const data = await Promise.all([timeSheetModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } }), allowanceModel.find(), personnelFineModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } }).populate('fine'), personnelBonusModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } }).populate('bonus')])
+        const list = data[0]
+        const allowances = data[1]
+        const fines = data[2]
+        const bonus = data[3]
+        allowances.forEach((item) => {
+          sumAllowance = + Number(item.value)
+        })
+        listFine = fines.map((item) => {
+          return item.fine
+        })
+        listBonus = bonus.map((item) => {
+          return item.bonus
+        })
+        listFine.forEach(element => {
+          sumFine = + Number(element.value)
+        });
+        listBonus.forEach(element => {
+          sumBonus = + Number(element.value)
+        });
+        if (list.length / 2 < 10) {
+          sumAllowance = 0
+        }
+        sum = item.rank.value / sumWorkingDay * list.length / 2 + sumBonus - sumFine + sumAllowance
+        listSum.push({ name: item.name, email: item.email, count: list.length / 2, listFine: [...listFine], listBonus: [...listBonus], salary: sum.toFixed() })
+        console.log(22222)
+      }
+    }
+    await publicity(listPersonnel)
+    const fields = [
+      "name",
+      "email",
+      "count",
+      "salary",
+    ];
+    const csv = exportExcel(fields, listSum)
+    return res.attachment(`Bang_Luong_Thang_${moment(day).format('MM')}.xlsx`).send(csv)
+  } catch (error) {
+    return res.status(403).json(error)
+  }
+}
+
+module.exports = { createTimeSheetMany, updateTimeSheet, deleteTimeSheet, getTimeSheet, getListTimeSheet, getListPersonnelTimeSheet, createTimeSheet, summaryOfWorkingDays, summaryOfSalary, exportExcelTimeSheet, exportExcelSummaryOfSalary }
