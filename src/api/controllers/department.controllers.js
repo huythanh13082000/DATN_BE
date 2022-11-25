@@ -55,7 +55,7 @@ const deleteDepartment = async (req, res) => {
 const exportExcelDepartment = async (req, res) => {
   const { limit, page, keyword } = req.query
   try {
-    departmentModel.find().skip(page * limit - limit).limit(limit).exec(async (err, departments) => {
+    departmentModel.find().exec(async (err, departments) => {
       console.log(departments);
       const fields = [
         "_id",

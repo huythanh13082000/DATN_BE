@@ -7,6 +7,8 @@ const personnelBonusModel = require("../models/personnelBonus.model")
 const personnelFineModel = require("../models/personnelFine.model")
 const salaryModel = require("../models/salary.model")
 const timeSheetModel = require("../models/timeSheet.model")
+const { parse } = require("json2csv");
+const { exportExcel } = require("../helper/exportExcel");
 
 
 const createTimeSheetMany = async (req, res) => {
@@ -185,6 +187,37 @@ const summaryOfWorkingDays = async (req, res) => {
   }
 }
 
+const exportExcelTimeSheet = async (req, res) => {
+  const { limit, page, keyword, day } = req.query
+  try {
+    const start = moment(day).startOf('month');
+    const end = moment(day).endOf('month');
+    console.log(start, end)
+    const listPersonnel = await personnelModel.find({}).populate('rank')
+    const listSum = []
+    async function publicity(data) {
+      for (const item of data) {
+        console.log(11111)
+        const list = await timeSheetModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } })
+        console.log(list.length)
+        listSum.push({ name: item.name, email: item.email, count: list.length / 2 })
+        console.log(22222)
+      }
+    }
+    await publicity(listPersonnel)
+    console.log(listSum);
+    const fields = [
+      "name",
+      "email",
+      "count",
+    ];
+    const csv = exportExcel(fields, listSum)
+    return res.attachment(`Bang_Cong_Thang_${moment(day).format('MM')}.csv`).send(csv)
+  } catch (error) {
+    return res.status(403).json(error)
+  }
+}
+
 const summaryOfSalary = async (req, res) => {
   try {
     const day = req.query.day;
@@ -239,4 +272,4 @@ const summaryOfSalary = async (req, res) => {
   }
 }
 
-module.exports = { createTimeSheetMany, updateTimeSheet, deleteTimeSheet, getTimeSheet, getListTimeSheet, getListPersonnelTimeSheet, createTimeSheet, summaryOfWorkingDays, summaryOfSalary }
+module.exports = { createTimeSheetMany, updateTimeSheet, deleteTimeSheet, getTimeSheet, getListTimeSheet, getListPersonnelTimeSheet, createTimeSheet, summaryOfWorkingDays, summaryOfSalary, exportExcelTimeSheet }
