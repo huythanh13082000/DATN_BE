@@ -203,12 +203,6 @@ const summaryOfSalary = async (req, res) => {
         let sumFine = 0
         let sumAllowance = 0
         const data = await Promise.all([timeSheetModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } }), allowanceModel.find(), personnelFineModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } }).populate('fine'), personnelBonusModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } }).populate('bonus')])
-        console.log(5677, data);
-        // const list = await timeSheetModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } })
-        // const allowances = await allowanceModel.find()
-        // console.log('123123', allowances);
-        // const fines = await personnelFineModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } }).populate('fine')
-        // const bonus = await personnelBonusModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } }).populate('bonus')
         const list = data[0]
         const allowances = data[1]
         const fines = data[2]
@@ -237,9 +231,8 @@ const summaryOfSalary = async (req, res) => {
       }
     }
     await publicity(listPersonnel)
-    // await salaryModel.findOneAndDelete({ time: { $gte: start, $lte: end } })
-    // await salaryModel.create({ data: listSum, time: day })
-    // console.log(6666, listSum)
+    await salaryModel.findOneAndDelete({ time: { $gte: start, $lte: end } })
+    await salaryModel.create({ data: listSum, time: day })
     return res.status(200).json({ list: listSum, description: 'Fetching List Salary And Save Success' })
   } catch (error) {
     return res.status(403).json(error)
