@@ -47,7 +47,7 @@ const sendMail = async (infor = {}) => {
       <div>
       ${infor.listBonus ? infor.listBonus.map((item) => {
       return `<p style="margin: 0;">-${JSON.parse(item).name}: ${numberWithCommas(JSON.parse(item).value)} đ</p>`
-    }) : ''}
+    }) : 'Không'}
       </div>
     </div>
     <br>
@@ -56,7 +56,7 @@ const sendMail = async (infor = {}) => {
       <div>
       ${infor.listFine ? infor.listFine.map((item) => {
       return `<p style="margin: 0;">-${JSON.parse(item).name}: ${numberWithCommas(JSON.parse(item).value)} đ</p>`
-    }) : ''}
+    }) : 'Không'}
       </div>
     </div>
     <p style="display: flex; justify-content: space-between">
