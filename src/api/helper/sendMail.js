@@ -24,7 +24,7 @@ const sendMail = async (infor = {}) => {
     from: 'huythanh1308bn@gmail.com', // sender address
     to: `${infor.email}`, // list of receivers
     subject: `Phiếu Lương Tháng ${moment().format('MM')}`, // Subject line
-    text: "PHT_APP xác nhận email", // plain text body
+    text: "PHT Phiếu lương", // plain text body
     html: `    <div>
     <p style="font-weight: bold;style="text-align: center"">CÔNG TY CỔ PHẦN THÀNH LIÊN</p>
     <p style="font-weight: bold;style="text-align: center"">PHIẾU LƯƠNG THÁNG ${Number(moment().format('MM')) - 1}/${moment().format('YYYY')}</p>
