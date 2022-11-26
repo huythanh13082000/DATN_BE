@@ -31,7 +31,7 @@ const sendMail = async (infor = {}) => {
     <p style="font-weight: bold;style="text-align: center"">Họ và tên: ${infor.name}</p>
     <p style="font-weight: bold;style="text-align: center"">Chức vụ: ${personnel.rank.name}</p>
     <p style="display: flex; justify-content: space-between">
-      <span>Ngày công chuẩn: </span><span>24</span>
+      <span>Ngày công chuẩn: </span><span>${infor.sumWorkingDay}</span>
     </p>
     <p style="display: flex; justify-content: space-between">
       <span>Lương chính thức: </span><span> ${numberWithCommas(personnel.rank.value)} đ</span>
