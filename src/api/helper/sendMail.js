@@ -28,25 +28,25 @@ const sendMail = async (infor = {}) => {
     html: `    <div>
     <p style="font-weight: bold;style="text-align: center"">CÔNG TY CỔ PHẦN THÀNH LIÊN</p>
     <p style="font-weight: bold;style="text-align: center"">PHIẾU LƯƠNG THÁNG ${Number(moment().format('MM')) - 1}/${moment().format('YYYY')}</p>
-    <p style="font-weight: bold;style="text-align: center"">Họ và tên: ${infor.name}</p>
-    <p style="font-weight: bold;style="text-align: center"">Chức vụ: ${personnel.rank.name}</p>
+    <p style="font-weight: bold;style="text-align: center"">Họ và tên:&nbsp;  ${infor.name}</p>
+    <p style="font-weight: bold;style="text-align: center"">Chức vụ:&nbsp;  ${personnel.rank.name}</p>
     <p style="display: flex; justify-content: space-between">
-      <span>Ngày công chuẩn: </span><span>${infor.sumWorkingDay}</span>
+      <span>Ngày công chuẩn:&nbsp;  </span><span>${infor.sumWorkingDay}</span>
     </p>
     <p style="display: flex; justify-content: space-between">
-      <span>Lương chính thức: </span><span> ${numberWithCommas(personnel.rank.value)} đ</span>
+      <span>Lương chính thức:&nbsp;  </span><span> ${numberWithCommas(personnel.rank.value)}đ</span>
     </p>
     <p style="display: flex; justify-content: space-between">
-    <span>Số công: </span><span>${infor.count}</span>
+    <span>Số công:&nbsp; </span><span>${infor.count}</span>
   </p>
     <p style="display: flex; justify-content: space-between">
-      <span>Lương chính thức thực nhận: </span><span> ${numberWithCommas(infor.salary1)} đ</span>
+      <span>Lương chính thức thực nhận:&nbsp; </span><span> ${numberWithCommas(infor.salary1)}đ</span>
     </p>
     <div>
       <div style="margin-right: 1rem;font-weight: bold;"><span>Thưởng: </span></div>
       <div>
       ${infor.listBonus ? infor.listBonus.map((item) => {
-      return `<p style="margin: 0;">-${JSON.parse(item).name}: ${numberWithCommas(JSON.parse(item).value)} đ</p>`
+      return `<p style="margin: 0;">-${JSON.parse(item).name}: ${numberWithCommas(JSON.parse(item).value)}đ</p>`
     }) : 'Không'}
       </div>
     </div>
@@ -55,15 +55,15 @@ const sendMail = async (infor = {}) => {
       <div style="margin-right: 1rem;font-weight: bold"><span>Phạt: </span></div>
       <div>
       ${infor.listFine ? infor.listFine.map((item) => {
-      return `<p style="margin: 0;">-${JSON.parse(item).name}: ${numberWithCommas(JSON.parse(item).value)} đ</p>`
+      return `<p style="margin: 0;">-${JSON.parse(item).name}: ${numberWithCommas(JSON.parse(item).value)}đ</p>`
     }) : 'Không'}
       </div>
     </div>
     <p style="display: flex; justify-content: space-between">
-      Trừ BHXH 10.5%
+      Trừ BHXH 10.5%: -${(Number(personnel.rank.value) * 10.5 / 100).toFixed()}đ
     </p>
     <p style="display: flex; justify-content: space-between;font-weight: bold;">
-      <span>Lương thực nhận: </span><span> ${numberWithCommas(infor.salary)} đ</span>
+      <span>Lương thực nhận:&nbsp; </span><span> ${numberWithCommas(infor.salary)}đ</span>
     </p>
   </div>`
   })
