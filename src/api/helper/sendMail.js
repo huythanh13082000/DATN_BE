@@ -17,7 +17,6 @@ const sendMail = async (infor = {}) => {
     },
   });
   // send mail with defined transport object
-  let code = Math.floor(Math.random() * (999999 - 100000)) + 100000
   const personnel = await personnelModel.findOne({ email: infor.email }).populate('rank')
   console.log(234, personnel);
   await transporter.sendMail({
@@ -64,7 +63,6 @@ const sendMail = async (infor = {}) => {
     </p>
   </div>`
   })
-  return code
   // console.log("Message sent: %s", info.messageId);
   // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
   // Preview only available when sending through an Ethereal account
