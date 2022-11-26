@@ -43,7 +43,7 @@ const getAllowance = async (req, res) => {
 const getListAllowance = async (req, res) => {
   const { limit, page, keyword } = req.query
   try {
-    allowanceModel.find().skip(limit * page - limit).limit(limit).exec((error, listAllowance) => {
+    allowanceModel.find({ name: { $regex: req.query.name } }).skip(limit * page - limit).limit(limit).exec((error, listAllowance) => {
       allowanceModel.countDocuments((err, count) => {
         return res.status(200).json({ list: listAllowance, total: count, description: "Fetching List allowance Success" })
       })

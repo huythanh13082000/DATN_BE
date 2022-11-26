@@ -42,7 +42,7 @@ const getFine = async (req, res) => {
 const getListFine = async (req, res) => {
   const { limit, page, keyword } = req.body
   try {
-    fineModel.find().skip(page * limit - limit).limit(limit).exec((err, fines) => {
+    fineModel.find({ name: { $regex: req.query.name } }).skip(page * limit - limit).limit(limit).exec((err, fines) => {
       fineModel.countDocuments((err, count) => {
         return res.status(200).json({ list: fines, total: count, description: 'Fetching Fines Success' })
       })
