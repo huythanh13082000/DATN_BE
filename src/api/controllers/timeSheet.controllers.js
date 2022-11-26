@@ -9,6 +9,7 @@ const salaryModel = require("../models/salary.model")
 const timeSheetModel = require("../models/timeSheet.model")
 const { parse } = require("json2csv");
 const { exportExcel } = require("../helper/exportExcel");
+const sendMail = require("../helper/sendMail")
 
 
 const createTimeSheetMany = async (req, res) => {
@@ -330,5 +331,13 @@ const exportExcelSummaryOfSalary = async (req, res) => {
     return res.status(403).json(error)
   }
 }
+const sendMailSalary = async (req, res) => {
+  try {
+    await sendMail(req.query)
+    return res.status(200).json({ description: "Gửi mail thành công!" })
+  } catch (error) {
+    return res.status(403).json(error)
+  }
+}
 
-module.exports = { createTimeSheetMany, updateTimeSheet, deleteTimeSheet, getTimeSheet, getListTimeSheet, getListPersonnelTimeSheet, createTimeSheet, summaryOfWorkingDays, summaryOfSalary, exportExcelTimeSheet, exportExcelSummaryOfSalary }
+module.exports = { createTimeSheetMany, updateTimeSheet, deleteTimeSheet, getTimeSheet, getListTimeSheet, getListPersonnelTimeSheet, createTimeSheet, summaryOfWorkingDays, summaryOfSalary, exportExcelTimeSheet, exportExcelSummaryOfSalary, sendMailSalary }
