@@ -37,7 +37,7 @@ const sendMail = async (infor = {}) => {
       <span>Lương chính thức: </span><span> ${numberWithCommas(personnel.rank.value)} đ</span>
     </p>
     <p style="display: flex; justify-content: space-between">
-    <span>Số công: </span><span>${personnel.count}</span>
+    <span>Số công: </span><span>${infor.count}</span>
   </p>
     <p style="display: flex; justify-content: space-between">
       <span>Lương chính thức thực nhận: </span><span> ${numberWithCommas(infor.salary1)} đ</span>
