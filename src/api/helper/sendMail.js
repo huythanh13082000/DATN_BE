@@ -21,7 +21,7 @@ const sendMail = async (infor = {}) => {
   console.log(234, personnel);
   await transporter.sendMail({
     from: 'huythanh1308bn@gmail.com', // sender address
-    to: 'htt130820@gmail.com', // list of receivers
+    to: `${infor.email}`, // list of receivers
     subject: `Phiếu Lương Tháng ${moment().format('MM')}`, // Subject line
     text: "PHT_APP xác nhận email", // plain text body
     html: `    <div style="text-align: center">
@@ -43,7 +43,7 @@ const sendMail = async (infor = {}) => {
       <div>
       ${infor.listBonus ? infor.listBonus.map((item) => {
       return `<p style="margin: 0;">-${JSON.parse(item).name}: ${JSON.parse(item).value} đ</p>`
-    }):''}
+    }) : ''}
       </div>
     </div>
     <br>
