@@ -260,7 +260,7 @@ const summaryOfSalary = async (req, res) => {
           sumAllowance = 0
         }
         sum = item.rank.value / sumWorkingDay * list.length / 2 + sumBonus - sumFine + sumAllowance
-        listSum.push({ name: item.name, email: item.email, count: list.length / 2, listFine: [...listFine], listBonus: [...listBonus], salary: sum.toFixed() })
+        listSum.push({ name: item.name, email: item.email, count: list.length / 2, listFine: [...listFine], listBonus: [...listBonus], salary: sum.toFixed(), salary1: item.rank.value })
         console.log(22222)
       }
     }
@@ -333,6 +333,7 @@ const exportExcelSummaryOfSalary = async (req, res) => {
 }
 const sendMailSalary = async (req, res) => {
   try {
+    console.log(req.query);
     await sendMail(req.query)
     return res.status(200).json({ description: "Gửi mail thành công!" })
   } catch (error) {
