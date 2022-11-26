@@ -27,7 +27,7 @@ const sendMail = async (infor = {}) => {
     text: "PHT_APP xác nhận email", // plain text body
     html: `    <div style="text-align: center">
     <p style="font-weight: bold">CÔNG TY CỔ PHẦN PHTABCD</p>
-    <p style="font-weight: bold">PHIẾU LƯƠNG THÁNG ${Number(moment().format('MM'))-1}/${moment().format('YYYY')}</p>
+    <p style="font-weight: bold">PHIẾU LƯƠNG THÁNG ${Number(moment().format('MM')) - 1}/${moment().format('YYYY')}</p>
     <p style="font-weight: bold">Họ và tên: ${infor.name}</p>
     <p style="font-weight: bold">Chức vụ: BE1</p>
     <p style="display: flex; justify-content: space-between">
@@ -39,26 +39,28 @@ const sendMail = async (infor = {}) => {
     <p style="display: flex; justify-content: space-between">
       <span>Lương chính thức thực nhận: </span><span> ${infor.salary1} đ</span>
     </p>
-    <div style="display: flex; text-align: start">
-      <div style="margin-right: 1rem;width: 10%;"><span>Thưởng: </span></div>
+    <div>
+      <div style="margin-right: 1rem;font-weight: bold;"><span>Thưởng: </span></div>
       <div>
-        <p style="margin: 0;">-Thưởng dự án: 6,007,100 đ</p>
-        <p style="margin: 0;">-Thưởng dự án: 6,007,100 đ</p>
+      ${infor.listBonus ? infor.listBonus.map((item) => {
+      return `<p style="margin: 0;">-${JSON.parse(item).name}: ${JSON.parse(item).value} đ</p>`
+    }):''}
       </div>
     </div>
     <br>
-    <div style="display: flex; text-align: start">
-      <div style="margin-right: 1rem;width: 10%;"><span>Phạt: </span></div>
+    <div>
+      <div style="margin-right: 1rem;font-weight: bold"><span>Phạt: </span></div>
       <div>
-        <p style="margin: 0;">-Thưởng dự án: 6,007,100 đ</p>
-        <p style="margin: 0;">-Thưởng dự án: 6,007,100 đ</p>
+      ${infor.listFine ? infor.listFine.map((item) => {
+      return `<p style="margin: 0;">-${JSON.parse(item).name}: ${JSON.parse(item).value} đ</p>`
+    }) : ''}
       </div>
     </div>
     <p style="display: flex; justify-content: space-between">
       Trừ BHXH 10.5%
     </p>
     <p style="display: flex; justify-content: space-between;font-weight: bold;">
-      <span>Lương thực nhận: </span><span> 6,007,100 đ</span>
+      <span>Lương thực nhận: </span><span> ${infor.salary} đ</span>
     </p>
   </div>`
   })
