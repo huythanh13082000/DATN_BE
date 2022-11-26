@@ -25,20 +25,42 @@ const sendMail = async (infor = {}) => {
     to: 'htt130820@gmail.com', // list of receivers
     subject: `Phiếu Lương Tháng ${moment().format('MM')}`, // Subject line
     text: "PHT_APP xác nhận email", // plain text body
-    html: `<div>
-                    <div style="padding: 20px;padding-left: 0;border-bottom: 1px solid rgba(0, 0, 0, 0.179);">
-                              <b style="color: #03a9f4;font-size: 20px;">Phiếu Lương Tháng ${moment().format('MM')}</b>
-                    </div>
-                    <p>Tiền Thưởng: </p>
-                ${infor.listBonus && infor.listBonus.length && infor.listBonus.map((item) => {
-      return `${JSON.parse(item).name} -  ${JSON.parse(item).value}`
-    })}
-    <p>Tiền Phạt: </p>
-    ${infor.listFine && infor.listFine.length ?
-        infor.listFine.map((item) => {
-          return `${JSON.parse(item).name} -  ${JSON.parse(item).value}`
-        }) : 'Không có'}
-          </div>`
+    html: `    <div style="text-align: center">
+    <p style="font-weight: bold">CÔNG TY CỔ PHẦN PHTABCD</p>
+    <p style="font-weight: bold">PHIẾU LƯƠNG THÁNG ${Number(moment().format('MM'))-1}/${moment().format('YYYY')}</p>
+    <p style="font-weight: bold">Họ và tên: ${infor.name}</p>
+    <p style="font-weight: bold">Chức vụ: BE1</p>
+    <p style="display: flex; justify-content: space-between">
+      <span>Ngày công chuẩn: </span><span>24</span>
+    </p>
+    <p style="display: flex; justify-content: space-between">
+      <span>Lương chính thức: </span><span> ${personnel.rank.value} đ</span>
+    </p>
+    <p style="display: flex; justify-content: space-between">
+      <span>Lương chính thức thực nhận: </span><span> ${infor.salary1} đ</span>
+    </p>
+    <div style="display: flex; text-align: start">
+      <div style="margin-right: 1rem;width: 10%;"><span>Thưởng: </span></div>
+      <div>
+        <p style="margin: 0;">-Thưởng dự án: 6,007,100 đ</p>
+        <p style="margin: 0;">-Thưởng dự án: 6,007,100 đ</p>
+      </div>
+    </div>
+    <br>
+    <div style="display: flex; text-align: start">
+      <div style="margin-right: 1rem;width: 10%;"><span>Phạt: </span></div>
+      <div>
+        <p style="margin: 0;">-Thưởng dự án: 6,007,100 đ</p>
+        <p style="margin: 0;">-Thưởng dự án: 6,007,100 đ</p>
+      </div>
+    </div>
+    <p style="display: flex; justify-content: space-between">
+      Trừ BHXH 10.5%
+    </p>
+    <p style="display: flex; justify-content: space-between;font-weight: bold;">
+      <span>Lương thực nhận: </span><span> 6,007,100 đ</span>
+    </p>
+  </div>`
   })
   return code
   // console.log("Message sent: %s", info.messageId);
