@@ -259,7 +259,7 @@ const summaryOfSalary = async (req, res) => {
         if (list.length / 2 < 10) {
           sumAllowance = 0
         }
-        sum = item.rank.value / sumWorkingDay * list.length / 2 + sumBonus - sumFine + sumAllowance
+        sum = (item.rank.value / sumWorkingDay * list.length / 2 + sumBonus - sumFine + sumAllowance) - (item.rank.value / sumWorkingDay * list.length / 2 + sumBonus - sumFine + sumAllowance) * 10.5 / 100
         listSum.push({ name: item.name, email: item.email, count: list.length / 2, listFine: [...listFine], listBonus: [...listBonus], salary: sum.toFixed(), salary1: (item.rank.value / sumWorkingDay * list.length / 2).toFixed() })
         console.log(22222)
       }
