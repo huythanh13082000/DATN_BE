@@ -25,11 +25,11 @@ const sendMail = async (infor = {}) => {
     to: `${infor.email}`, // list of receivers
     subject: `Phiếu Lương Tháng ${moment().format('MM')}`, // Subject line
     text: "PHT_APP xác nhận email", // plain text body
-    html: `    <div style="text-align: center">
-    <p style="font-weight: bold">CÔNG TY CỔ PHẦN THÀNH LIÊN</p>
-    <p style="font-weight: bold">PHIẾU LƯƠNG THÁNG ${Number(moment().format('MM')) - 1}/${moment().format('YYYY')}</p>
-    <p style="font-weight: bold">Họ và tên: ${infor.name}</p>
-    <p style="font-weight: bold">Chức vụ: BE1</p>
+    html: `    <div>
+    <p style="font-weight: bold;style="text-align: center"">CÔNG TY CỔ PHẦN THÀNH LIÊN</p>
+    <p style="font-weight: bold;style="text-align: center"">PHIẾU LƯƠNG THÁNG ${Number(moment().format('MM')) - 1}/${moment().format('YYYY')}</p>
+    <p style="font-weight: bold;style="text-align: center"">Họ và tên: ${infor.name}</p>
+    <p style="font-weight: bold;style="text-align: center"">Chức vụ: ${personnel.rank.name}</p>
     <p style="display: flex; justify-content: space-between">
       <span>Ngày công chuẩn: </span><span>24</span>
     </p>
@@ -37,7 +37,7 @@ const sendMail = async (infor = {}) => {
       <span>Lương chính thức: </span><span> ${numberWithCommas(personnel.rank.value)} đ</span>
     </p>
     <p style="display: flex; justify-content: space-between">
-    <span>Ngày công chuẩn: </span><span>${personnel.count}</span>
+    <span>Số công: </span><span>${personnel.count}</span>
   </p>
     <p style="display: flex; justify-content: space-between">
       <span>Lương chính thức thực nhận: </span><span> ${numberWithCommas(infor.salary1)} đ</span>
