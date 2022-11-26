@@ -1,6 +1,7 @@
 const nodemailer = require("nodemailer");
 const moment = require("moment/moment");
 const personnelModel = require("../models/personnel.model");
+const { numberWithCommas } = require("./numberWithCommas");
 // Only needed if you don't have a real mail account for testing
 const sendMail = async (infor = {}) => {
   console.log(345, infor.listBonus);
@@ -33,16 +34,19 @@ const sendMail = async (infor = {}) => {
       <span>Ngày công chuẩn: </span><span>24</span>
     </p>
     <p style="display: flex; justify-content: space-between">
-      <span>Lương chính thức: </span><span> ${personnel.rank.value} đ</span>
+      <span>Lương chính thức: </span><span> ${numberWithCommas(personnel.rank.value)} đ</span>
     </p>
     <p style="display: flex; justify-content: space-between">
-      <span>Lương chính thức thực nhận: </span><span> ${infor.salary1} đ</span>
+    <span>Ngày công chuẩn: </span><span>${personnel.count}</span>
+  </p>
+    <p style="display: flex; justify-content: space-between">
+      <span>Lương chính thức thực nhận: </span><span> ${numberWithCommas(infor.salary1)} đ</span>
     </p>
     <div>
       <div style="margin-right: 1rem;font-weight: bold;"><span>Thưởng: </span></div>
       <div>
       ${infor.listBonus ? infor.listBonus.map((item) => {
-      return `<p style="margin: 0;">-${JSON.parse(item).name}: ${JSON.parse(item).value} đ</p>`
+      return `<p style="margin: 0;">-${JSON.parse(item).name}: ${numberWithCommas(JSON.parse(item).value)} đ</p>`
     }) : ''}
       </div>
     </div>
@@ -51,7 +55,7 @@ const sendMail = async (infor = {}) => {
       <div style="margin-right: 1rem;font-weight: bold"><span>Phạt: </span></div>
       <div>
       ${infor.listFine ? infor.listFine.map((item) => {
-      return `<p style="margin: 0;">-${JSON.parse(item).name}: ${JSON.parse(item).value} đ</p>`
+      return `<p style="margin: 0;">-${JSON.parse(item).name}: ${numberWithCommas(JSON.parse(item).value)} đ</p>`
     }) : ''}
       </div>
     </div>
@@ -59,7 +63,7 @@ const sendMail = async (infor = {}) => {
       Trừ BHXH 10.5%
     </p>
     <p style="display: flex; justify-content: space-between;font-weight: bold;">
-      <span>Lương thực nhận: </span><span> ${infor.salary} đ</span>
+      <span>Lương thực nhận: </span><span> ${numberWithCommas(infor.salary)} đ</span>
     </p>
   </div>`
   })
