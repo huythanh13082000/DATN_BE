@@ -10,7 +10,7 @@ const getListUser = async (req, res) => {
   try {
     const user = req.user
     if (user.role === 'admin') {
-      await userModel.find({ name: { $regex: req.query.name } }).skip(page * limit - limit).limit(limit).exec((err, users) => {
+      await userModel.find({}).skip(page * limit - limit).limit(limit).exec((err, users) => {
         userModel.countDocuments((err, count) => {
           if (err) {
             return next(err)

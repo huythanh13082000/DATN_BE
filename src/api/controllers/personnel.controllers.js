@@ -47,7 +47,7 @@ const getPersonnelEmail = async (req, res) => {
 const getListPersonnel = async (req, res) => {
   const { limit, page, keyword } = req.query
   try {
-    personnelModel.find({ name: { $regex: req.query.name } }).populate('rank').skip(limit * page - limit).limit(limit).exec((err, personnels) => {
+    personnelModel.find({ name: { $regex: req.query.name, $options: 'i' } }).populate('rank').skip(limit * page - limit).limit(limit).exec((err, personnels) => {
       personnelModel.countDocuments((err, count) => {
         return res.status(200).json({ list: personnels, total: count, description: 'Fetching List Personnel Success' })
       })
@@ -67,4 +67,4 @@ const deletePersonnel = async (req, res) => {
   }
 }
 
-module.exports = { createPersonnel, updatePersonnel, getPersonnel, getListPersonnel, deletePersonnel ,getPersonnelEmail}
+module.exports = { createPersonnel, updatePersonnel, getPersonnel, getListPersonnel, deletePersonnel, getPersonnelEmail }

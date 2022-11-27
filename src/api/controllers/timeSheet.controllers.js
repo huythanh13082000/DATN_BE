@@ -169,7 +169,7 @@ const summaryOfWorkingDays = async (req, res) => {
     const start = moment(day).startOf('month');
     const end = moment(day).endOf('month');
     console.log(start, end)
-    const listPersonnel = await personnelModel.find({ name: { $regex: `${req.query.name}i` } }).populate('rank')
+    const listPersonnel = await personnelModel.find({ name: { $regex: req.query.name, $options: 'i' } }).populate('rank')
     const listSum = []
     async function publicity(data) {
       for (const item of data) {
