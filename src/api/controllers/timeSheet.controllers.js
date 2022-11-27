@@ -153,7 +153,7 @@ const getTimeSheet = async (req, res) => {
 const getListTimeSheet = async (req, res) => {
   try {
     const { limit, page, keyword } = req.query
-    timeSheetModel.find().populate('personnel').skip(limit * page - limit).limit(limit).exec((err, timeSheets) => {
+    timeSheetModel.find({ name: req.query.name }).populate('personnel').skip(limit * page - limit).limit(limit).exec((err, timeSheets) => {
       timeSheetModel.countDocuments((err, count) => {
         return res.status(200).json({ list: timeSheets, total: count, description: "Fetching List TimeSheet Succes" })
       })
@@ -169,7 +169,7 @@ const summaryOfWorkingDays = async (req, res) => {
     const start = moment(day).startOf('month');
     const end = moment(day).endOf('month');
     console.log(start, end)
-    const listPersonnel = await personnelModel.find({}).populate('rank')
+    const listPersonnel = await personnelModel.find({ name: { $regex: req.query.name } }).populate('rank')
     const listSum = []
     async function publicity(data) {
       for (const item of data) {
