@@ -6,7 +6,7 @@ const getListDepartment = async (req, res) => {
   const { limit, page, keyword } = req.query
   console.log(33444)
   try {
-    departmentModel.find({ name: { $regex: req.query.name } }).skip(page * limit - limit).limit(limit).exec((err, departments) => {
+    departmentModel.find({ name: { $regex: `/${req.query.name}/i` } }).skip(page * limit - limit).limit(limit).exec((err, departments) => {
       departmentModel.countDocuments((err, count) => {
         if (err) {
           return next(err)
