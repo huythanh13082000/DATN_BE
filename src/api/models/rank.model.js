@@ -7,7 +7,6 @@ const rankSchema = new mongoose.Schema({
   createdAt: { type: Date, required: true, default: Date.now },
   updatedAt: { type: Date },
 })
-rankSchema.index({name: 'text'});
 const rankModel = mongoose.model('rank', rankSchema)
 
 module.exports = rankModel
