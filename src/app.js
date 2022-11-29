@@ -21,6 +21,7 @@ const notificationRoute = require('./api/routes/notification.route');
 var cors = require('cors');
 const personnelFineRoute = require('./api/routes/personnelFine.route');
 const salaryRoute = require('./api/routes/salary.route');
+const personnelDayOffRoute = require('./api/routes/personnelDayOff.route');
 require('dotenv').config()
 
 const app = express()
@@ -77,6 +78,7 @@ app.use('/api', personnelAllowanceRoute)
 app.use('/api', notificationRoute)
 app.use('/api', personnelFineRoute)
 app.use('/api', salaryRoute)
+app.use('/api', personnelDayOffRoute)
 app.post('/uploadFile', middlewareAuth.verifyToken, upload.single('avatar'), uploadFile);
 app.post('/uploadFileCSV', middlewareAuth.verifyToken, upload.single('file'), uploadFile);
 const cpUpload = upload.fields([{ name: 'avatar', maxCount: 1 }, { name: 'file', maxCount: 1 }])
