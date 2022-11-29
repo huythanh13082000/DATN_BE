@@ -10,6 +10,7 @@ const timeSheetModel = require("../models/timeSheet.model")
 const { parse } = require("json2csv");
 const { exportExcel } = require("../helper/exportExcel");
 const sendMail = require("../helper/sendMail")
+const personnelDayOffModel = require("../models/personnelDayOff.model")
 
 
 const createTimeSheetMany = async (req, res) => {
@@ -165,18 +166,24 @@ const getListTimeSheet = async (req, res) => {
 
 const summaryOfWorkingDays = async (req, res) => {
   try {
+    console.log(456)
     const day = req.query.day;
     const start = moment(day).startOf('month');
     const end = moment(day).endOf('month');
     console.log(start, end)
     const listPersonnel = await personnelModel.find({ name: { $regex: req.query.name, $options: 'i' } }).populate('rank')
     const listSum = []
+    console.log(555, listPersonnel)
     async function publicity(data) {
       for (const item of data) {
-        console.log(11111)
+        const listDayOff = await personnelDayOffModel.find({ personnel: item._id, dayOff: { $gte: start, $lte: end } })
+        let sumDayOff = 0
+        listDayOff.forEach((item1) => {
+          sumDayOff = sumDayOff + Math.abs(item1.status)
+        })
         const list = await timeSheetModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } })
         console.log(list.length)
-        listSum.push({ name: item.name, email: item.email, count: list.length / 2 })
+        listSum.push({ name: item.name, email: item.email, count: list.length / 2 + sumDayOff })
         console.log(22222)
       }
     }
@@ -236,13 +243,19 @@ const summaryOfSalary = async (req, res) => {
         let sumBonus = 0
         let sumFine = 0
         let sumAllowance = 0
-        const data = await Promise.all([timeSheetModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } }), allowanceModel.find(), personnelFineModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } }).populate('fine'), personnelBonusModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } }).populate('bonus')])
+        let sumDayOff = 0
+
+        const data = await Promise.all([timeSheetModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } }), allowanceModel.find(), personnelFineModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } }).populate('fine'), personnelBonusModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } }).populate('bonus'), personnelDayOffModel.find({ personnel: item._id, dayOff: { $gte: start, $lte: end } })])
         const list = data[0]
         const allowances = data[1]
         const fines = data[2]
         const bonus = data[3]
+        const listDayOff = data[4]
         allowances.forEach((item) => {
           sumAllowance = + Number(item.value)
+        })
+        listDayOff.forEach((item1) => {
+          sumDayOff = sumDayOff + Math.abs(item1.status)
         })
         listFine = fines.map((item) => {
           return item.fine
@@ -259,8 +272,8 @@ const summaryOfSalary = async (req, res) => {
         if (list.length / 2 < 10) {
           sumAllowance = 0
         }
-        sum = (item.rank.value / sumWorkingDay * list.length / 2 + sumBonus - sumFine + sumAllowance) - (item.rank.value / sumWorkingDay * list.length / 2 + sumBonus - sumFine + sumAllowance) * 10.5 / 100
-        listSum.push({ name: item.name, email: item.email, count: list.length / 2, listFine: [...listFine], listBonus: [...listBonus], salary: sum.toFixed(), salary1: (item.rank.value / sumWorkingDay * list.length / 2).toFixed() })
+        sum = (item.rank.value / sumWorkingDay * (list.length / 2 + sumDayOff) + sumBonus - sumFine + sumAllowance) - (item.rank.value / sumWorkingDay * list.length / 2 + sumBonus - sumFine + sumAllowance) * 10.5 / 100
+        listSum.push({ name: item.name, email: item.email, count: (list.length / 2), sumDayOff: sumDayOff, listFine: [...listFine], listBonus: [...listBonus], salary: sum.toFixed(), salary1: (item.rank.value / sumWorkingDay * (list.length / 2 + sumDayOff)).toFixed() })
         console.log(22222)
       }
     }
