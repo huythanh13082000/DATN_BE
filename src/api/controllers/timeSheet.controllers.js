@@ -183,8 +183,7 @@ const summaryOfWorkingDays = async (req, res) => {
         })
         const list = await timeSheetModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } })
         console.log(list.length)
-        listSum.push({ name: item.name, email: item.email, count: list.length / 2 + sumDayOff })
-        console.log(22222)
+        listSum.push({ name: item.name, email: item.email, count: list.length / 2, sumDayOff: sumDayOff })
       }
     }
     await publicity(listPersonnel)
