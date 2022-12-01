@@ -44,7 +44,7 @@ const getPersonnelDayOff = async (req, res) => {
 const getListPersonnelDayOff = async (req, res) => {
   const { limit, page, keyword } = req.query
   try {
-    personnelDayOffModel.find().populate('personnel').skip(page * limit - limit).limit(limit).sort([['dayOff', 1]]).exec((err, listPersonnelDayOff) => {
+    personnelDayOffModel.find().populate('personnel').skip(page * limit - limit).limit(limit).sort([['createdAt', -1]]).exec((err, listPersonnelDayOff) => {
       personnelDayOffModel.countDocuments((err, count) => {
         return res.status(200).json({ list: listPersonnelDayOff, total: count, description: 'Fetching List PersonnelDayOff Succces' })
       })
