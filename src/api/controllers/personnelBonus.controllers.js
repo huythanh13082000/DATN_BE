@@ -44,7 +44,7 @@ const getPersonnelBonus = async (req, res) => {
 const getListPersonnelBonus = async (req, res) => {
   const { limit, page, keyword } = req.query
   try {
-    personnelBonusModel.find().populate('personnel').populate('bonus').skip(page * limit - limit).limit(limit).exec((err, listPersonnelBonus) => {
+    personnelBonusModel.find().populate('personnel').populate('bonus').skip(page * limit - limit).limit(limit).sort([['createdAt', -1]]).exec((err, listPersonnelBonus) => {
       personnelBonusModel.countDocuments((err, count) => {
         return res.status(200).json({ list: listPersonnelBonus, total: count, description: 'Fetching List PersonnelBonus Succces' })
       })

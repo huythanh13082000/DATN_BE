@@ -154,7 +154,7 @@ const getTimeSheet = async (req, res) => {
 const getListTimeSheet = async (req, res) => {
   try {
     const { limit, page, keyword } = req.query
-    timeSheetModel.find({ name: req.query.name }).populate('personnel').skip(limit * page - limit).limit(limit).exec((err, timeSheets) => {
+    timeSheetModel.find({ name: req.query.name }).populate('personnel').skip(limit * page - limit).limit(limit).sort([['createdAt', -1]]).exec((err, timeSheets) => {
       timeSheetModel.countDocuments((err, count) => {
         return res.status(200).json({ list: timeSheets, total: count, description: "Fetching List TimeSheet Succes" })
       })
