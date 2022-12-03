@@ -3,10 +3,11 @@ const { createNotification, updateNotification, deleteNotification, getNotificat
 const middlewareAuth = require('../middleware/auth')
 const notificationRoute = express.Router()
 
-notificationRoute.post('/nonotification', middlewareAuth.verifyToken, createNotification)
-notificationRoute.put('/nonotification/:id', middlewareAuth.verifyToken, updateNotification)
-notificationRoute.delete('/nonotification/:id', middlewareAuth.verifyToken, deleteNotification)
-notificationRoute.get('/nonotification/:id', middlewareAuth.verifyToken, getNotification)
-notificationRoute.get('/nonotification', middlewareAuth.verifyToken, getListNotification)
+notificationRoute.post('/notification', middlewareAuth.verifyToken, createNotification)
+notificationRoute.put('/notification', middlewareAuth.verifyToken, updateNotification)
+notificationRoute.delete('/notification', middlewareAuth.verifyToken, deleteNotification)
+notificationRoute.get('/notification', middlewareAuth.verifyToken, getListNotification)
+notificationRoute.get('/notification/:id', middlewareAuth.verifyToken, getNotification)
+
 
 module.exports = notificationRoute

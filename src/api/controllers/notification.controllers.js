@@ -12,9 +12,8 @@ const createNotification = async (req, res) => {
 
 const updateNotification = async (req, res) => {
   const data = req.body
-  const _id = req.params.id
   try {
-    await notificationModel.findByIdAndUpdate({ _id }, { ...data, updatedAt: Date.now() })
+    await notificationModel.findByIdAndUpdate({ _id: data._id }, { ...data, updatedAt: Date.now() })
     const notification = await notificationModel.findOne({ _id })
     return res.status(200).json({ data: notification, description: "Update Notification Success" })
   } catch (error) {
@@ -22,9 +21,9 @@ const updateNotification = async (req, res) => {
   }
 }
 const deleteNotification = async (req, res) => {
-  const _id = req.params.id
+  const ids = req.body.ids
   try {
-    await notificationModel.findByIdAndDelete({ _id })
+    await notificationModel.deleteMany({ _id: { $in: ids } })
     return res.status(200).json({ description: "Delete Notification Success" })
   } catch (error) {
     return res.status(403).json(error)
@@ -52,4 +51,4 @@ const getListNotification = async (req, res) => {
   }
 }
 
-module.exports = { createNotification, updateNotification, deleteNotification, getNotification ,getListNotification}
+module.exports = { createNotification, updateNotification, deleteNotification, getNotification, getListNotification }
