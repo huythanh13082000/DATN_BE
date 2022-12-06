@@ -113,11 +113,18 @@ const refreshToken = async (req, res) => {
   const { refreshToken } = req.body
   const user = await userModel.findOne({ refreshToken })
   if (user) {
-    const tokens = generateToken({ _id: user._id })
-    console.log(11112, tokens);
-    const user1 = await userModel.findOneAndUpdate({ _id: user._id }, { refreshToken: tokens.refreshToken })
-    console.log(444, user1);
-    return res.status(200).json(tokens)
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, async (err, id) => {
+      if (err) {
+        console.log(err)
+        return res.status(403).json("refresh token expire")
+      }
+      const tokens = generateToken({ _id: user._id })
+      console.log(11112, tokens);
+      const user1 = await userModel.findOneAndUpdate({ _id: user._id }, { refreshToken: tokens.refreshToken })
+      console.log(444, user1);
+      return res.status(200).json(tokens)
+    })
+
   }
   else return res.status(403).json({ message: "refresh token not valid" })
 }
