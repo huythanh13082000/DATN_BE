@@ -8,8 +8,6 @@ const personnelModel = require("../models/personnel.model");
 const getListUser = async (req, res) => {
   const { limit, page, keyword } = req.query
   try {
-    const user = req.user
-    if (user.role === 'admin') {
       await userModel.find({}).skip(page * limit - limit).limit(limit).sort([['createdAt', -1]]).exec((err, users) => {
         userModel.countDocuments((err, count) => {
           if (err) {
@@ -18,8 +16,6 @@ const getListUser = async (req, res) => {
           else res.status(200).json({ list: users, total: count })
         })
       })
-    }
-    else return res.status(401).json('Tài khoản không có quyền thao tác!')
   } catch (error) {
     console.log(error)
   }
@@ -27,29 +23,13 @@ const getListUser = async (req, res) => {
 
 const createUser = async (req, res) => {
   try {
-    const user = req.user
-    if (user.role === 'admin') {
       const data = req.body
-      // console.log(5555, email);
-      // const user = await userModel.findOne({ email: data.email })
-      // console.log(4444, user);
-      // if (!user) {
-      // console.log(4444445, user);
       const saft = await bcrypt.genSalt(10)
       console.log(78888, saft);
       const hash = await bcrypt.hash(data.passWord, saft)
       console.log(788889, hash);
       await userModel.create({ passWord: hash, email: data.email, role: data.role })
       return res.status(200).json({ description: 'Tạo tài khoản thành công!' })
-      // }
-      // else {
-      //   return res.status(403).json({ description: 'Email đã được sử dụng!' })
-      // }
-    }
-    else {
-      return res.status(401).json('Tài khoản không có quyền thao tác!')
-    }
-
   } catch (error) {
     console.log(6666, error);
     return res.status(403).json(error)
@@ -71,13 +51,9 @@ const defaultUser = async (req, res) => {
 }
 const deleteUser = async (req, res) => {
   try {
-    const user = req.user
-    if (user.role === 'admin') {
       const ids = req.body.ids
       await userModel.findOneAndDelete({ _id: { $in: ids } })
       return res.json({ description: 'Xóa tài khoản thành công!' })
-    }
-    else return res.status(401).json('Tài khoản không có quyền thao tác!')
   } catch (error) {
     return res.json(error)
   }

@@ -44,19 +44,10 @@ const createTimeSheetMany = async (req, res) => {
 const createTimeSheet = async (req, res) => {
   try {
     const start = moment().startOf('day')
-    // end today
     const end = moment().endOf('day')
-    // const mid = moment().endOf('day')
-    // console.log(111, start)
-    // console.log(11113, mid)
     const data = req.body
-    console.log(11113245, req);
-    console.log(1111324, req.params.personnel);
     const time = moment().hour();
-    console.log(time)
-    // if (time.includes('PM')) {
     const timeSheets = await timeSheetModel.find({ createdAt: { $gte: start, $lte: end }, personnel: data.personnel })
-    console.log(56788, timeSheets);
     if (timeSheets.length === 0) {
       const timeSheet = await timeSheetModel.create({ ...data })
       return res.status(200).json({ data: timeSheet, description: "Chấm công thành công!" })
@@ -69,20 +60,6 @@ const createTimeSheet = async (req, res) => {
     else {
       return res.status(200).json({ description: "Đã hoàn thành chấm công!" })
     }
-    // }
-    // else {
-    //   const timeSheets = await timeSheetModel.find({ createdAt: { $gte: start, $lte: mid } })
-    //   if (timeSheets.length > 0) {
-    //     return res.status(200).json({ description: `Bạn đã chấm công`, time: timeSheets[0].createdAt })
-    //   }
-    //   else {
-    //     const timeSheet = await timeSheetModel.create(data)
-    //     return res.status(200).json({ data: timeSheet, description: "Chấm công thành công!" })
-    //   }
-    // }
-
-    // const timeSheet = await timeSheetModel.create(data)
-    // return res.status(200).json({ data: timeSheet, description: "Create TimeSheet Success" })
   } catch (error) {
     return res.status(403).json(error)
   }
@@ -90,9 +67,7 @@ const createTimeSheet = async (req, res) => {
 const getListPersonnelTimeSheet = async (req, res) => {
   try {
     const data = req.query
-    console.log(345, data)
     const start = moment().startOf('day');
-    // end today
     const end = moment().endOf('day');
     const timeSheets = await timeSheetModel.find({ createdAt: { $gte: start, $lte: end }, personnel: data.personnel }).populate('personnel')
     console.log(timeSheets);
@@ -103,7 +78,6 @@ const getListPersonnelTimeSheet = async (req, res) => {
   }
 }
 const updateTimeSheet = async (req, res) => {
-  // const _id = req.params.id
   try {
     const data = req.body
     await timeSheetModel.findByIdAndUpdate({ _id: data._id }, { status: data.status, updatedAt: Date.now() })
@@ -113,25 +87,6 @@ const updateTimeSheet = async (req, res) => {
     return res.status(403).json(error)
   }
 }
-// const deleteTimeSheet = async (req, res) => {
-//   // start today
-//   const workingDay = req.body.workingDay
-//   const start = moment(workingDay).startOf('day');
-//   // end today
-//   const end = moment(workingDay).endOf('day');
-//   // const _id = req.params.id
-//   try {
-//     const listTimeSheet = await timeSheetModel.find({ workingDay: { $gte: start, $lte: end } })
-//     if (listTimeSheet.length === 0) {
-//       return res.status(200).json({ description: `No data found ${moment(workingDay).format('DD/MM/YYYY')}` })
-//     }
-//     await timeSheetModel.deleteMany({ workingDay: { $gte: start, $lte: end } })
-//     return res.status(200).json({ description: "Delete TimeSheet Succes" })
-//   } catch (error) {
-//     return res.status(403).json(error)
-//   }
-// }
-// }
 const deleteTimeSheet = async (req, res) => {
   const ids = req.body.ids
   try {
