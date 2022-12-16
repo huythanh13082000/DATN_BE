@@ -4,7 +4,6 @@ const userModel = require('../models/user.model');
 const middlewareAuth = {
   verifyToken: (req, res, next) => {
     const token = req.headers.authorization
-    console.log(111, token);
     if (token) {
       const accessToken = token.split(" ")[1]
       jwt.verify(accessToken, process.env.TOKEN_SECRET, async (err, id) => {
@@ -14,8 +13,6 @@ const middlewareAuth = {
         }
         const user = await userModel.findOne({ _id: id })
         req.user = user
-
-        console.log(444, user)
         next()
       })
     }

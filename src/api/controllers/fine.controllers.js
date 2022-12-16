@@ -13,7 +13,6 @@ const createFine = async (req, res) => {
 const updateFine = async (req, res) => {
   try {
     const data = req.body
-    console.log(333, data)
     await fineModel.findByIdAndUpdate({ _id: data._id }, { ...data, updatedAt: Date.now() })
     const fine = await fineModel.findOne({ _id: data._id })
     return res.status(200).json({ data: fine, description: "Update Fine Success" })

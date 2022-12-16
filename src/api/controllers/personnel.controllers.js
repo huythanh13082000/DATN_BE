@@ -3,9 +3,7 @@ const personnelModel = require("../models/personnel.model")
 
 const createPersonnel = async (req, res) => {
   const data = req.body
-  console.log(777, data)
   const avatar = req.avatar
-  console.log(444, avatar)
   try {
     const personnel = await personnelModel.create({ ...data, avatar })
     return res.status(200).json({ data: personnel, description: 'Create Personnel Success' })
@@ -59,7 +57,6 @@ const getListPersonnel = async (req, res) => {
 const deletePersonnel = async (req, res) => {
   try {
     const ids = req.body.ids
-    console.log(ids);
     await personnelModel.deleteMany({ _id: { $in: ids } })
     return res.status(200).json({ description: 'Delete Personnel Success' })
   } catch (error) {

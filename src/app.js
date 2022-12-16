@@ -1,12 +1,12 @@
 const express = require('express')
 const morgan = require('morgan')
 const mongoose = require('mongoose');
-const userRoute = require('./api/routes/user.route')
 const bodyParser = require('body-parser')
 const multer = require('multer')
+const { uploadFile } = require('./api/controllers/uploadFIle.controllers');
+const userRoute = require('./api/routes/user.route')
 const uploadFileRoute = require('./api/routes/uploadFile.route');
 const middlewareAuth = require('./api/middleware/auth');
-const { uploadFile } = require('./api/controllers/uploadFIle.controllers');
 const departmentRoute = require('./api/routes/department.route');
 const rankRoute = require('./api/routes/rank.route');
 const contractRoute = require('./api/routes/contract.route');
@@ -18,10 +18,11 @@ const fineRoute = require('./api/routes/fine.route');
 const allowanceRoute = require('./api/routes/allowance.route');
 const personnelAllowanceRoute = require('./api/routes/personnelAllowance.route');
 const notificationRoute = require('./api/routes/notification.route');
-var cors = require('cors');
 const personnelFineRoute = require('./api/routes/personnelFine.route');
 const salaryRoute = require('./api/routes/salary.route');
 const personnelDayOffRoute = require('./api/routes/personnelDayOff.route');
+
+var cors = require('cors');
 require('dotenv').config()
 
 const app = express()
@@ -31,7 +32,6 @@ app.use(express.urlencoded({ extended: true, limit: '30mb' }));
 app.use(express.static('uploads'))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cors())
-
 // SET STORAGE
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -45,23 +45,14 @@ var storage = multer.diskStorage({
     req.filename = fileName
   }
 })
-
 const upload = multer({ storage: storage })
-
-// app.use(cors());
-// create application/x-www-form-urlencoded parser
 main().catch(err => console.log(err));
 
 async function main() {
-  // const uri = process.env.URL
-  // console.log(uri)
-  // "mongodb+srv://phthanh1308:Phamhuythanh1308@cluster0.6u4juwz.mongodb.net/DATN";
-  console.log(444, process.env.URL)
   mongoose.connect(process.env.URL,
     () => {
       console.log('Connected to MongoDB');
     });
-  // use `await mongoose.connect('mongodb://user:password@localhost:27017/test');` if your database has auth enabled
 }
 app.use('/api', userRoute)
 app.use('/api', uploadFileRoute)
@@ -83,8 +74,6 @@ app.post('/uploadFile', middlewareAuth.verifyToken, upload.single('avatar'), upl
 app.post('/uploadFileCSV', middlewareAuth.verifyToken, upload.single('file'), uploadFile);
 const cpUpload = upload.fields([{ name: 'avatar', maxCount: 1 }, { name: 'file', maxCount: 1 }])
 app.post('/readFile', cpUpload, (req, res) => {
-  console.log(555555, req.files.avatar[0].path);
-  console.log(66666, req.files.file[0].path);
   return res.json('sadasd')
 })
 

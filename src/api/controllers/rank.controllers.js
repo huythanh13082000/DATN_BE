@@ -27,7 +27,6 @@ const updateRank = async (req, res) => {
 const deleteRank = async (req, res) => {
   try {
     const ids = req.body.ids
-    console.log(ids);
     await rankModel.deleteMany({ _id: { $in: ids } })
     return res.status(200).json({ description: 'Delete Rank Success' })
   } catch (error) {

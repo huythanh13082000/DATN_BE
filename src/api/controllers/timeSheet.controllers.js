@@ -17,15 +17,11 @@ const createTimeSheetMany = async (req, res) => {
   try {
     const data = req.body
     const workingDay = data.workingDay
-    console.log(555, workingDay);
     const start = moment(workingDay).startOf('day');
-    // end today
     const end = moment(workingDay).endOf('day');
     const lisTimeSheet = await timeSheetModel.find({ workingDay: { $gte: start, $lte: end } }).populate('personnel')
-    console.log(5555, lisTimeSheet);
     if (lisTimeSheet.length === 0) {
       const listPersonnel = await personnelModel.find()
-      console.log(43333, listPersonnel);
       const data = listPersonnel.map((item) => {
         return { personnel: item._id, workingDay: workingDay, status: 1 }
       })
@@ -53,7 +49,6 @@ const createTimeSheet = async (req, res) => {
       return res.status(200).json({ data: timeSheet, description: "Chấm công thành công!" })
     }
     else if (timeSheets.length === 1) {
-      console.log(567889, timeSheets);
       const timeSheet = await timeSheetModel.create({ ...data })
       return res.status(200).json({ data: timeSheet, description: "Chấm công thành công!" })
     }
@@ -70,7 +65,6 @@ const getListPersonnelTimeSheet = async (req, res) => {
     const start = moment().startOf('day');
     const end = moment().endOf('day');
     const timeSheets = await timeSheetModel.find({ createdAt: { $gte: start, $lte: end }, personnel: data.personnel }).populate('personnel')
-    console.log(timeSheets);
     return res.status(200).json({ data: timeSheets })
   } catch (error) {
     console.log(error)
@@ -121,14 +115,11 @@ const getListTimeSheet = async (req, res) => {
 
 const summaryOfWorkingDays = async (req, res) => {
   try {
-    console.log(456)
     const day = req.query.day;
     const start = moment(day).startOf('month');
     const end = moment(day).endOf('month');
-    console.log(start, end)
     const listPersonnel = await personnelModel.find({ name: { $regex: req.query.name, $options: 'i' } }).populate('rank')
     const listSum = []
-    console.log(555, listPersonnel)
     async function publicity(data) {
       for (const item of data) {
         const listDayOff = await personnelDayOffModel.find({ personnel: item._id, dayOff: { $gte: start, $lte: end } })
@@ -137,12 +128,10 @@ const summaryOfWorkingDays = async (req, res) => {
           sumDayOff = sumDayOff + Math.abs(item1.status)
         })
         const list = await timeSheetModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } })
-        console.log(list.length)
         listSum.push({ name: item.name, email: item.email, count: list.length / 2, sumDayOff: sumDayOff })
       }
     }
     await publicity(listPersonnel)
-    console.log(6666, listSum)
     return res.status(200).json({ list: listSum, description: 'Fetching List TimeSheet Succes' })
   } catch (error) {
     return res.status(403).json(error)
@@ -154,20 +143,15 @@ const exportExcelTimeSheet = async (req, res) => {
   try {
     const start = moment(day).startOf('month');
     const end = moment(day).endOf('month');
-    console.log(start, end)
     const listPersonnel = await personnelModel.find({}).populate('rank')
     const listSum = []
     async function publicity(data) {
       for (const item of data) {
-        console.log(11111)
         const list = await timeSheetModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } })
-        console.log(list.length)
         listSum.push({ name: item.name, email: item.email, count: list.length / 2 })
-        console.log(22222)
       }
     }
     await publicity(listPersonnel)
-    console.log(listSum);
     const fields = [
       "name",
       "email",
@@ -184,21 +168,17 @@ const summaryOfSalary = async (req, res) => {
   try {
     const day = req.query.day;
     const sumWorkingDay = req.query.sumWorkingDay
-    console.log(7777, sumWorkingDay);
     const start = moment(day).startOf('month');
     const end = moment(day).endOf('month');
-    console.log(start, end)
     const listPersonnel = await personnelModel.find({}).populate('rank')
     const listSum = []
     async function publicity(data) {
       for (const item of data) {
         let sum = 0
-        console.log(11111)
         let sumBonus = 0
         let sumFine = 0
         let sumAllowance = 0
         let sumDayOff = 0
-
         const data = await Promise.all([timeSheetModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } }), allowanceModel.find(), personnelFineModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } }).populate('fine'), personnelBonusModel.find({ personnel: item._id, createdAt: { $gte: start, $lte: end } }).populate('bonus'), personnelDayOffModel.find({ personnel: item._id, dayOff: { $gte: start, $lte: end } })])
         const list = data[0]
         const allowances = data[1]
@@ -228,7 +208,6 @@ const summaryOfSalary = async (req, res) => {
         }
         sum = (item.rank.value / sumWorkingDay * (list.length / 2 + sumDayOff) + sumBonus - sumFine + sumAllowance) - (item.rank.value / sumWorkingDay * list.length / 2 + sumBonus - sumFine + sumAllowance) * 10.5 / 100
         listSum.push({ name: item.name, email: item.email, count: (list.length / 2), sumDayOff: sumDayOff, listFine: [...listFine], listBonus: [...listBonus], salary: sum.toFixed(), salary1: (item.rank.value / sumWorkingDay * (list.length / 2 + sumDayOff)).toFixed() })
-        console.log(22222)
       }
     }
     await publicity(listPersonnel)
@@ -244,16 +223,13 @@ const exportExcelSummaryOfSalary = async (req, res) => {
   try {
     const day = req.query.day;
     const sumWorkingDay = req.query.sumWorkingDay
-    console.log(7777, sumWorkingDay);
     const start = moment(day).startOf('month');
     const end = moment(day).endOf('month');
-    console.log(start, end)
     const listPersonnel = await personnelModel.find({}).populate('rank')
     const listSum = []
     async function publicity(data) {
       for (const item of data) {
         let sum = 0
-        console.log(11111)
         let sumBonus = 0
         let sumFine = 0
         let sumAllowance = 0
@@ -282,7 +258,6 @@ const exportExcelSummaryOfSalary = async (req, res) => {
         }
         sum = item.rank.value / sumWorkingDay * list.length / 2 + sumBonus - sumFine + sumAllowance
         listSum.push({ name: item.name, email: item.email, count: list.length / 2, listFine: [...listFine], listBonus: [...listBonus], salary: sum.toFixed() })
-        console.log(22222)
       }
     }
     await publicity(listPersonnel)
@@ -300,7 +275,6 @@ const exportExcelSummaryOfSalary = async (req, res) => {
 }
 const sendMailSalary = async (req, res) => {
   try {
-    console.log(req.query);
     await sendMail(req.query)
     return res.status(200).json({ description: "Gửi mail thành công!" })
   } catch (error) {

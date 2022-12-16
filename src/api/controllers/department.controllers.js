@@ -4,7 +4,6 @@ const departmentModel = require("../models/department.model");
 
 const getListDepartment = async (req, res) => {
   const { limit, page, keyword } = req.query
-  console.log(33444)
   try {
     departmentModel.find({
       name: {
@@ -47,7 +46,6 @@ const updateDepartment = async (req, res) => {
 const deleteDepartment = async (req, res) => {
   try {
     const ids = req.body.ids
-    console.log(ids);
     await departmentModel.deleteMany({ _id: { $in: ids } })
     return res.status(200).json({ description: 'Delete Rank Success' })
   } catch (error) {
@@ -60,7 +58,6 @@ const exportExcelDepartment = async (req, res) => {
   const { limit, page, keyword } = req.query
   try {
     departmentModel.find().exec(async (err, departments) => {
-      console.log(departments);
       const fields = [
         "_id",
         "name",
@@ -77,7 +74,6 @@ const exportExcelDepartment = async (req, res) => {
 
 const getDepartmentColumn = async (req, res) => {
   try {
-    console.log(111, departmentModel.distinct().schema.paths)
     const departmentColumn = []
     Object.keys(departmentModel.distinct().schema.paths).forEach((key, index) => {
       if (!key.includes('_')) {
