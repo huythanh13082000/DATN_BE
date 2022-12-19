@@ -8,14 +8,14 @@ const personnelModel = require("../models/personnel.model");
 const getListUser = async (req, res) => {
   const { limit, page, keyword } = req.query
   try {
-      await userModel.find({}).skip(page * limit - limit).limit(limit).sort([['createdAt', -1]]).exec((err, users) => {
-        userModel.countDocuments((err, count) => {
-          if (err) {
-            return next(err)
-          }
-          else res.status(200).json({ list: users, total: count })
-        })
+    await userModel.find({}).skip(page * limit - limit).limit(limit).sort([['createdAt', -1]]).exec((err, users) => {
+      userModel.countDocuments((err, count) => {
+        if (err) {
+          return next(err)
+        }
+        else res.status(200).json({ list: users, total: count })
       })
+    })
   } catch (error) {
     console.log(error)
   }
@@ -23,11 +23,11 @@ const getListUser = async (req, res) => {
 
 const createUser = async (req, res) => {
   try {
-      const data = req.body
-      const saft = await bcrypt.genSalt(10)
-      const hash = await bcrypt.hash(data.passWord, saft)
-      await userModel.create({ passWord: hash, email: data.email, role: data.role })
-      return res.status(200).json({ description: 'Tạo tài khoản thành công!' })
+    const data = req.body
+    const saft = await bcrypt.genSalt(10)
+    const hash = await bcrypt.hash(data.passWord, saft)
+    await userModel.create({ passWord: hash, email: data.email, role: data.role })
+    return res.status(200).json({ description: 'Tạo tài khoản thành công!' })
   } catch (error) {
     return res.status(403).json(error)
   }
@@ -48,9 +48,9 @@ const defaultUser = async (req, res) => {
 }
 const deleteUser = async (req, res) => {
   try {
-      const ids = req.body.ids
-      await userModel.findOneAndDelete({ _id: { $in: ids } })
-      return res.json({ description: 'Xóa tài khoản thành công!' })
+    const ids = req.body.ids
+    await userModel.findOneAndDelete({ _id: { $in: ids } })
+    return res.json({ description: 'Xóa tài khoản thành công!' })
   } catch (error) {
     return res.json(error)
   }
@@ -59,6 +59,7 @@ const deleteUser = async (req, res) => {
 const login = async (req, res) => {
   const { email, passWord } = req.body
   const user = await userModel.findOne({ email })
+  console.log(user);
   if (user) {
     const checkPassWord = await bcrypt.compare(passWord, user.passWord)
     if (checkPassWord) {
