@@ -34,9 +34,9 @@ const deleteRank = async (req, res) => {
   }
 }
 const getListRank = async (req, res) => {
-  const { limit, page, keyword, name } = req.query
+  const { limit, page } = req.query
   try {
-    rankModel.find({ name: { $regex: req.query.name, $options: 'i' } }).populate('department').skip(page * limit - limit).limit(limit).sort([['createdAt', -1]]).exec((err, ranks) => {
+    rankModel.find({ name: new RegExp(req.query.name, 'i') }).populate({ path: 'department', match: { name: new RegExp(req.query.departmentName, 'i') } }).skip(page * limit - limit).limit(limit).sort([['createdAt', -1]]).exec((err, ranks) => {
       rankModel.countDocuments((err, count) => {
         return res.status(200).json({ list: ranks, total: count, description: 'Fetching List Rank Success' })
       })

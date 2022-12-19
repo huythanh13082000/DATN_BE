@@ -43,9 +43,15 @@ const getPersonnelEmail = async (req, res) => {
 }
 
 const getListPersonnel = async (req, res) => {
-  const { limit, page, keyword } = req.query
+  const { limit, page } = req.query
+  const query = { ...req.query }
+  const excludedFields = ["page", "sort", "limit", "fields"]
+  excludedFields.forEach((e) => delete query[e])
+  query['name'] = new RegExp(req.query.name, 'i')
+  query['email'] = new RegExp(req.query.email, 'i')
   try {
-    personnelModel.find({ name: { $regex: req.query.name, $options: 'i' } }).populate('rank').skip(limit * page - limit).limit(limit).sort([['createdAt', -1]]).exec((err, personnels) => {
+    personnelModel.find({ ...query }).populate('rank').skip(limit * page - limit).limit(limit).sort([['createdAt', -1]]).exec((err, personnels) => {
+      console.log(personnels);
       personnelModel.countDocuments((err, count) => {
         return res.status(200).json({ list: personnels, total: count, description: 'Fetching List Personnel Success' })
       })

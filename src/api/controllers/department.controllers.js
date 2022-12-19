@@ -6,9 +6,7 @@ const getListDepartment = async (req, res) => {
   const { limit, page, keyword } = req.query
   try {
     departmentModel.find({
-      name: {
-        $regex: req.query.name, $options: 'i'
-      }
+      name: new RegExp(req.query.name, 'i')
     }).skip(page * limit - limit).limit(limit).sort([['createdAt', -1]]).exec((err, departments) => {
       departmentModel.countDocuments((err, count) => {
         if (err) {

@@ -1,4 +1,5 @@
 const personnelDayOffModel = require("../models/personnelDayOff.model")
+const moment = require("moment/moment")
 
 const createPersonnelDayOff = async (req, res) => {
   try {
@@ -42,24 +43,25 @@ const getPersonnelDayOff = async (req, res) => {
 }
 
 const getListPersonnelDayOff = async (req, res) => {
-  const { limit, page, keyword } = req.query
-  const query = { ...req.query }
-  const excludedFields = ["page", "sort", "limit", "fields"]
-  excludedFields.forEach((e) => delete query[e])
   try {
-    personnelDayOffModel.find(query).populate({
+    const { limit, page } = req.query
+    const query = { ...req.query }
+    const excludedFields = ["page", "sort", "limit", "fields"]
+    excludedFields.forEach((e) => delete query[e])
+    if (query.dayOff) {
+      const start = moment(query.dayOff).startOf('day');
+      const end = moment(query.dayOff).endOf('day');
+      query['dayOff'] = { $gte: start, $lte: end }
+    }
+    personnelDayOffModel.find({ ...query }).populate({
       path: 'personnel',
-      match: { name: new RegExp('Nhat', 'i') },
-      // sort: { name: -1 }
+      match: { name: new RegExp(req.query.name, 'i') },
     }).skip(page * limit - limit).limit(limit).sort([['createdAt', -1]]).exec((err, listPersonnelDayOff) => {
-      console.log(345, listPersonnelDayOff);
       const listPersonnelDayOffNew = listPersonnelDayOff.filter((item) => item.personnel !== null)
       personnelDayOffModel.countDocuments((err, count) => {
         return res.status(200).json({ list: listPersonnelDayOffNew, total: count, description: 'Fetching List PersonnelDayOff Succces' })
       })
     })
-    // const listPersonnelDayOff = await personnelDayOffModel.find(query).populate('personnel')
-    // return res.status(200).json({ list: listPersonnelDayOff })
   } catch (error) {
     return res.status(403).json(error)
   }
