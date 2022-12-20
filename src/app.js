@@ -55,7 +55,7 @@ async function main() {
     });
 }
 app.get('/', function (req, res) {
-  res.send('hello world')
+  res.send('BE DATN')
 })
 app.use('/api', userRoute)
 app.use('/api', uploadFileRoute)
