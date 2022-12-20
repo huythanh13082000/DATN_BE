@@ -127,7 +127,7 @@ const summaryOfWorkingDays = async (req, res) => {
     const day = req.query.day;
     const start = moment(day).startOf('month');
     const end = moment(day).endOf('month');
-    const listPersonnel = await personnelModel.find({ name: { $regex: req.query.name, $options: 'i' } }).populate('rank')
+    const listPersonnel = await personnelModel.find({ name: new RegExp(req.query.name, 'i'), email: new RegExp(req.query.email, 'i') }).populate('rank')
     const listSum = []
     async function publicity(data) {
       for (const item of data) {
@@ -179,7 +179,7 @@ const summaryOfSalary = async (req, res) => {
     const sumWorkingDay = req.query.sumWorkingDay
     const start = moment(day).startOf('month');
     const end = moment(day).endOf('month');
-    const listPersonnel = await personnelModel.find({}).populate('rank')
+    const listPersonnel = await personnelModel.find({ name: new RegExp(req.query.name, 'i'), email: new RegExp(req.query.email, 'i') }).populate('rank')
     const listSum = []
     async function publicity(data) {
       for (const item of data) {

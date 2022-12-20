@@ -54,6 +54,9 @@ async function main() {
       console.log('Connected to MongoDB');
     });
 }
+app.get('/', function (req, res) {
+  res.send('hello world')
+})
 app.use('/api', userRoute)
 app.use('/api', uploadFileRoute)
 app.use('/api', departmentRoute)
