@@ -102,10 +102,19 @@ const getTimeSheet = async (req, res) => {
 
 const getListTimeSheet = async (req, res) => {
   try {
-    const { limit, page, keyword } = req.query
-    timeSheetModel.find({ name: req.query.name }).populate('personnel').skip(limit * page - limit).limit(limit).sort([['createdAt', -1]]).exec((err, timeSheets) => {
+    const { limit, page } = req.query
+    const query = { ...req.query }
+    const excludedFields = ["page", "sort", "limit", "fields"]
+    excludedFields.forEach((e) => delete query[e])
+    if (query.createdAt) {
+      const start = moment(query.createdAt).startOf('day');
+      const end = moment(query.createdAt).endOf('day');
+      query['createdAt'] = { $gte: start, $lte: end }
+    }
+    timeSheetModel.find({ ...query }).populate({ path: 'personnel', match: { name: new RegExp(req.query.name, 'i'), email: new RegExp(req.query.email, 'i') } }).skip(limit * page - limit).limit(limit).sort([['createdAt', -1]]).exec((err, timeSheets) => {
       timeSheetModel.countDocuments((err, count) => {
-        return res.status(200).json({ list: timeSheets, total: count, description: "Fetching List TimeSheet Succes" })
+        const listTimeSheet = timeSheets.filter((item) => item.personnel !== null)
+        return res.status(200).json({ list: listTimeSheet, total: count, description: "Fetching List TimeSheet Succes" })
       })
     })
   } catch (error) {

@@ -40,9 +40,9 @@ const getBonus = async (req, res) => {
   }
 }
 const getListBonus = async (req, res) => {
-  const { limit, page, keyword } = req.query
+  const { limit, page } = req.query
   try {
-    bonusModel.find({ name: { $regex: req.query.name, $options: 'i' } }).skip(limit * page - limit).limit(limit).sort([['createdAt', -1]]).exec((error, listBonus) => {
+    bonusModel.find({ name: new RegExp(req.query.name, 'i') }).skip(limit * page - limit).limit(limit).sort([['createdAt', -1]]).exec((error, listBonus) => {
       bonusModel.countDocuments((err, count) => {
         return res.status(200).json({ list: listBonus, total: count, description: "Fetching List bonus Success" })
       })

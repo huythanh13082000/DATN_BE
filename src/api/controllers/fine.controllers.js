@@ -23,7 +23,7 @@ const updateFine = async (req, res) => {
 const deleteFine = async (req, res) => {
   try {
     const ids = req.body.ids
-    await fineModel.findByIdAndDelete({ _id: { $in: ids } })
+    await fineModel.deleteMany({ _id: { $in: ids } })
     return res.status(200).json({ description: "Delete Fine Success" })
   } catch (error) {
     return res.status(403).json(error)
@@ -39,9 +39,9 @@ const getFine = async (req, res) => {
   }
 }
 const getListFine = async (req, res) => {
-  const { limit, page, keyword } = req.body
+  const { limit, page } = req.query
   try {
-    fineModel.find({ name: { $regex: req.query.name, $options: 'i' } }).skip(page * limit - limit).limit(limit).sort([['createdAt', -1]]).exec((err, fines) => {
+    fineModel.find({ name: new RegExp(req.query.name) }).skip(page * limit - limit).limit(limit).sort([['createdAt', -1]]).exec((err, fines) => {
       fineModel.countDocuments((err, count) => {
         return res.status(200).json({ list: fines, total: count, description: 'Fetching Fines Success' })
       })

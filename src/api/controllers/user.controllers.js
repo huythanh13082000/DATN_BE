@@ -6,9 +6,9 @@ const personnelModel = require("../models/personnel.model");
 
 
 const getListUser = async (req, res) => {
-  const { limit, page, keyword } = req.query
+  const { limit, page } = req.query
   try {
-    await userModel.find({}).skip(page * limit - limit).limit(limit).sort([['createdAt', -1]]).exec((err, users) => {
+    await userModel.find({ email: new RegExp(req.query.email, 'i') }).skip(page * limit - limit).limit(limit).sort([['createdAt', -1]]).exec((err, users) => {
       userModel.countDocuments((err, count) => {
         if (err) {
           return next(err)

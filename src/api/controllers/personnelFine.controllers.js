@@ -1,4 +1,5 @@
 const personnelFineModel = require("../models/personnelFine.model")
+const moment = require("moment/moment")
 
 const createPersonnelFine = async (req, res) => {
   const data = req.body
@@ -40,10 +41,19 @@ const getPersonnelFine = async (req, res) => {
 }
 const getListPersonnelFine = async (req, res) => {
   const { limit, page, keyword } = req.query
+  const query = { ...req.query }
+  const excludedFields = ["page", "sort", "limit", "fields"]
+  excludedFields.forEach((e) => delete query[e])
+  if (query.dateFine) {
+    const start = moment(query.dateFine).startOf('day');
+    const end = moment(query.dateFine).endOf('day');
+    query['dateFine'] = { $gte: start, $lte: end }
+  }
   try {
-     personnelFineModel.find().populate('personnel').populate('fine').skip(page * limit - limit).limit(limit).sort([['createdAt', -1]]).exec((err, listPersonnelFine) => {
+    personnelFineModel.find({ ...query }).populate({ path: 'personnel', match: { name: new RegExp(req.query.personnelName, 'i') } }).populate('fine').skip(page * limit - limit).limit(limit).sort([['createdAt', -1]]).exec((err, listPersonnelFine) => {
       personnelFineModel.countDocuments((err, count) => {
-        return res.status(200).json({ list: listPersonnelFine, total: count, description: 'Fetching List PersonnelFine Succces' })
+        const listPersonnelFineNew = listPersonnelFine.filter((item) => item.personnel !== null)
+        return res.status(200).json({ list: listPersonnelFineNew, total: count, description: 'Fetching List PersonnelFine Succces' })
       })
     })
   } catch (error) {

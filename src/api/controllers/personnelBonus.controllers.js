@@ -1,3 +1,4 @@
+const moment = require("moment/moment")
 const personnelBonusModel = require("../models/personnelBonus.model")
 
 const createPersonnelBonus = async (req, res) => {
@@ -42,11 +43,20 @@ const getPersonnelBonus = async (req, res) => {
 }
 
 const getListPersonnelBonus = async (req, res) => {
-  const { limit, page, keyword } = req.query
+  const { limit, page } = req.query
+  const query = { ...req.query }
+  const excludedFields = ["page", "sort", "limit", "fields"]
+  excludedFields.forEach((e) => delete query[e])
+  if (query.dateBonus) {
+    const start = moment(query.dateBonus).startOf('day');
+    const end = moment(query.dateBonus).endOf('day');
+    query['dateBonus'] = { $gte: start, $lte: end }
+  }
   try {
-    personnelBonusModel.find().populate('personnel').populate('bonus').skip(page * limit - limit).limit(limit).sort([['createdAt', -1]]).exec((err, listPersonnelBonus) => {
+    personnelBonusModel.find({ ...query }).populate({ path: 'personnel', match: { name: new RegExp(req.query.personnelName, 'i') } }).populate('bonus').skip(page * limit - limit).limit(limit).sort([['createdAt', -1]]).exec((err, listPersonnelBonus) => {
       personnelBonusModel.countDocuments((err, count) => {
-        return res.status(200).json({ list: listPersonnelBonus, total: count, description: 'Fetching List PersonnelBonus Succces' })
+        const listPersonnelBonusNew = listPersonnelBonus.filter((item) => item.personnel !== null)
+        return res.status(200).json({ list: listPersonnelBonusNew, total: count, description: 'Fetching List PersonnelBonus Succces' })
       })
     })
   } catch (error) {
