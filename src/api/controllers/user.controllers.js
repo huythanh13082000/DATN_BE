@@ -65,7 +65,7 @@ const login = async (req, res) => {
     if (checkPassWord) {
       const tokens = generateToken({ _id: user._id })
       await userModel.findOneAndUpdate({ _id: user._id }, { refreshToken: tokens.refreshToken })
-      return res.status(200).json(tokens)
+      return res.status(200).json({ ...tokens, role: user.role })
     }
     else return res.status(403).json({ message: "Email or password wrong" })
   }
