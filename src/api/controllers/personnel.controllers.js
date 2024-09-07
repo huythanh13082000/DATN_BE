@@ -43,15 +43,27 @@ const getPersonnelEmail = async (req, res) => {
 }
 
 const getListPersonnel = async (req, res) => {
-  const { limit, page } = req.query
+  const { limit, page, dateOfBirth } = req.query
   const query = { ...req.query }
+  delete query.dateOfBirth
   const excludedFields = ["page", "sort", "limit", "fields"]
   excludedFields.forEach((e) => delete query[e])
   query['name'] = new RegExp(req.query.name, 'i')
   query['email'] = new RegExp(req.query.email, 'i')
+  if (dateOfBirth) {
+    const today = new Date();
+    const formattedDate = `${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
+    // So sánh ngày sinh theo chuỗi (MM-DD)
+    query['$expr'] = {
+      $eq: [
+        { $substr: [{ $toString: "$dateOfBirth" }, 5, 5] }, // Trích xuất "MM-DD" từ chuỗi "YYYY-MM-DD"
+        formattedDate
+      ]
+    };
+  }
   try {
     personnelModel.find({ ...query }).populate('rank').skip(limit * page - limit).limit(limit).sort([['createdAt', -1]]).exec((err, personnels) => {
-      console.log(personnels);
       personnelModel.countDocuments((err, count) => {
         return res.status(200).json({ list: personnels, total: count, description: 'Fetching List Personnel Success' })
       })

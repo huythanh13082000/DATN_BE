@@ -43,10 +43,8 @@ const getPersonnelAllowance = async (req, res) => {
 
 const getListPersonnelAllowance = async (req, res) => {
   const { limit, page, keyword } = req.query
-  console.log(12121);
   try {
     personnelAllowanceModel.find().populate('personnel').populate('bonus').skip(page * limit - limit).limit(limit).sort([['createdAt', -1]]).exec((err, listPersonnelAllowance) => {
-      console.log(111, listPersonnelAllowance);
       personnelAllowanceModel.countDocuments((err, count) => {
         return res.status(200).json({ list: listPersonnelAllowance, total: count, description: 'Fetching List PersonnelAllowance Succces' })
       })

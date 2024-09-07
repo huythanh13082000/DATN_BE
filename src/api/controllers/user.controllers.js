@@ -59,7 +59,6 @@ const deleteUser = async (req, res) => {
 const login = async (req, res) => {
   const { email, passWord } = req.body
   const user = await userModel.findOne({ email })
-  console.log(user);
   if (user) {
     const checkPassWord = await bcrypt.compare(passWord, user.passWord)
     if (checkPassWord) {

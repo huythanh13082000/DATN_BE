@@ -284,11 +284,19 @@ const exportExcelSummaryOfSalary = async (req, res) => {
 }
 const sendMailSalary = async (req, res) => {
   try {
-    await sendMail(req.query)
+    await sendMail(req.query, 'SALARY')
+    return res.status(200).json({ description: "Gửi mail thành công!" })
+  } catch (error) {
+    return res.status(403).json(error)
+  }
+}
+const sendMailBirdDay = async (req, res) => {
+  try {
+    await sendMail(req.query, 'BIRDDAY')
     return res.status(200).json({ description: "Gửi mail thành công!" })
   } catch (error) {
     return res.status(403).json(error)
   }
 }
 
-module.exports = { createTimeSheetMany, updateTimeSheet, deleteTimeSheet, getTimeSheet, getListTimeSheet, getListPersonnelTimeSheet, createTimeSheet, summaryOfWorkingDays, summaryOfSalary, exportExcelTimeSheet, exportExcelSummaryOfSalary, sendMailSalary }
+module.exports = { createTimeSheetMany, updateTimeSheet, deleteTimeSheet, getTimeSheet, getListTimeSheet, getListPersonnelTimeSheet, createTimeSheet, summaryOfWorkingDays, summaryOfSalary, exportExcelTimeSheet, exportExcelSummaryOfSalary, sendMailSalary,sendMailBirdDay }
